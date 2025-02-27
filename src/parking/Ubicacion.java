@@ -8,6 +8,6 @@ package parking;
  *
  * @author vassanca
  */
-public class Ubicación {
+public class Ubicacion {
     
 }
