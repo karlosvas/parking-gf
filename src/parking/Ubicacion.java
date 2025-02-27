@@ -1,4 +1,3 @@
- 
 package parking;
 
  
@@ -31,7 +30,5 @@ public class Ubicacion {
     public String toString() {
         return "Ubicacion{" + "planta=" + planta + ", plaza=" + plaza + '}';
     }
-    
-    
     
 }
