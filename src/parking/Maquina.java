@@ -6,10 +6,9 @@ public class Maquina {
     private Terminal terminal;
     private Deposito deposito;
     private ArrayList<Ticket> tickets;
-    private final int[][] parking = new int[2][19];
+   
     private int capacidad;
-    
-    //Crear atributo capacidad int, método q devuelva booleano (True<60) sino false
+    private final int MAX_CAPACIDAD=60; 
     
      
     

@@ -4,11 +4,15 @@
  */
 package parking;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author zurdelro
  */
 public class Terminal extends javax.swing.JFrame {
+
+    private static final int[][] parking = new int[2][19];
 
     /**
      * Creates new form Terminal
@@ -49,6 +53,11 @@ public class Terminal extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Parking"));
 
         generaticket.setText("Generar Ticket");
+        generaticket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generaticketActionPerformed(evt);
+            }
+        });
 
         retirarvehiculo.setText("Retirar Vehículo");
         retirarvehiculo.addActionListener(new java.awt.event.ActionListener() {
@@ -124,10 +133,9 @@ public class Terminal extends javax.swing.JFrame {
                                         .addGap(39, 39, 39)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(text_matricula, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(text_id, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                        .addComponent(text_billete)
-                                        .addComponent(text_moneda)))))
+                                    .addComponent(text_id, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(text_billete)
+                                    .addComponent(text_moneda))))
                         .addGap(59, 59, 59)))
                 .addContainerGap())
         );
@@ -210,40 +218,24 @@ public class Terminal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_text_idActionPerformed
 
+    private void generaticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generaticketActionPerformed
+        Ubicacion u = new Ubicacion();
+        for (int y = 0; y < parking.length; y++) {
+            for (int x = 0; x < parking[y].length; x++) {
+                if (parking[y][x]==0) {
+                    u.setPlanta(y);
+                    u.setPlaza(x);
+                }
+            }
+        }
+
+        Ticket t = new Ticket(this.text_matricula.getText(), LocalDate.now(),u);
+        t.generarTicket();
+    }//GEN-LAST:event_generaticketActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Terminal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Terminal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Terminal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Terminal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Terminal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane ScrollPaneParking;
@@ -263,6 +255,5 @@ public class Terminal extends javax.swing.JFrame {
     private javax.swing.JTextField text_matricula;
     private javax.swing.JTextField text_moneda;
     // End of variables declaration//GEN-END:variables
-
 
 }

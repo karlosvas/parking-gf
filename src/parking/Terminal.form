@@ -111,11 +111,9 @@
                                   </Group>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="text_matricula" pref="120" max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="text_id" pref="120" max="32767" attributes="0"/>
-                                          <Component id="text_billete" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="text_moneda" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="text_id" pref="120" max="32767" attributes="0"/>
+                                      <Component id="text_billete" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="text_moneda" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -171,6 +169,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Generar Ticket"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generaticketActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="retirarvehiculo">
           <Properties>
