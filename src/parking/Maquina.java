@@ -1,6 +1,7 @@
 package parking;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Maquina {
     private Terminal terminal;
@@ -42,10 +43,9 @@ public class Maquina {
 
     @Override
     public String toString() {
-        return "Maquina [terminal=" + terminal + ", deposito=" + deposito + ", tickets=" + tickets +  ", getTerminal()=" + getTerminal() + ", getDeposito()=" + getDeposito()
-                + ", getTickets()=" + getTickets() + ", getTicketsActivos()=" + getTicketsActivos() + ", getClass()="
-                + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+        return "Maquina [terminal=" + terminal + ", deposito=" + deposito + ", tickets=" + tickets + ", parking="
+                + Arrays.toString(parking) + ", getTerminal()=" + getTerminal() + ", getDeposito()=" + getDeposito()
+                + ", getTickets()=" + getTickets() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+                + ", toString()=" + super.toString() + "]";
     }
-
-    
 }

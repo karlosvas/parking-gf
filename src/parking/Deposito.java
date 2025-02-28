@@ -1,78 +1,87 @@
 package parking;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JOptionPane;
 
 public class Deposito {
-    private ArrayList<Double> monedas;
-    private ArrayList<Integer> billetes;
-    private final int[] tiposBilletes = {5, 10, 20};
-    private final double[] tiposMonedas = {1, 2, 0,50 ,0.20, 0.10, 0.05};
+    /**
+     * (monedas) Map de monedas en el depósito.
+     * (biletes) Map de billetes en el depósito.
+     * */
+    private final Map<Double, Double> billetes = new HashMap<>();
+    private final Map<Double, Double> monedas = new HashMap<>();
+    private final double CANTIDAD_POR_DEFECTO = 100.0;
+    
 
-    public Deposito(){}
-    public Deposito(ArrayList<Double> monedas, ArrayList<Integer> billetes) {
-        this.monedas = monedas;
-        this.billetes = billetes;
+    /**
+     * Constructor de la clase Deposito por defecto
+     * da un valor inicial a los billetes y monedas por defecto
+     */
+    public Deposito() {
+        billetes.put(5.0, CANTIDAD_POR_DEFECTO);
+        billetes.put(10.0, CANTIDAD_POR_DEFECTO);
+        billetes.put(20.0, CANTIDAD_POR_DEFECTO);
+        monedas.put(1.0, CANTIDAD_POR_DEFECTO);
+        monedas.put(2.0, CANTIDAD_POR_DEFECTO);
+        monedas.put(0.5, CANTIDAD_POR_DEFECTO);
+        monedas.put(0.10, CANTIDAD_POR_DEFECTO);
+        monedas.put(0.20, CANTIDAD_POR_DEFECTO);
+        monedas.put(0.05, CANTIDAD_POR_DEFECTO);
     }
 
-    public Deposito(double monedasIntroducidas, int billetes) {
-        ArrayList<Double> cantidadBilletes = new ArrayList<Double>();
-        for (double moneda : tiposMonedas) {
+    /**
+     * Metodo para introducir monedas en el deposito
+     * 
+     * @param moneda Moneda a introducir en el deposito por el usuario
+     *
+     */
+    public void introducirMoneda(double nuevaMoneda) {
+        // Recorremos el array de monedas y si la moneda introducida es igual a la moneda del array actualizamos la cantidad
+        this.monedas.put(nuevaMoneda, monedas.get(nuevaMoneda) + nuevaMoneda);
+    }
 
-            double defecto = 100.0;
-            if(moneda == monedasIntroducidas){
-                defecto += monedasIntroducidas;
-            }
+    /**
+     * Metodo para introducir billetes en el deposito
+     * 
+     * @param billete Billete a introducir en el deposito por el usuario
+     */
+    public void introducirBillete(int billete) {
+        // Recorremos el array de billetes y si el billete introducido es igual al billete del array actualizamos la cantidad
+        this.billetes.put((double) billete, billetes.get((double) billete) + 1);
+    }
 
-            cantidadBilletes.add(Double.valueOf(defecto));
+    /**
+     * Método para procesar el pago de un ticket
+     * 
+     * @param dinero Dinero introducido por el usuario
+     * @param pagar Dinero a pagar por el ticket
+     */
+    public void procesarPagoTicket(double dinero, double pagar) {
+        if(dinero < pagar && dinero > 0 && pagar > 0) {
+            JOptionPane.showMessageDialog(null, "Dinero insuficiente te faltan " + (pagar - dinero) + "€");
+            return;
+        } else if(dinero >= pagar){
+            double cambio
+        } else {
+            JOptionPane.showMessageDialog(null, "Dinero introducido incorrecto");
         }
-
-        ArrayList<Integer> cantidadMonedas = new ArrayList<Integer>();
-        for(int billete : tiposBilletes){
-            int defecto=100;
-            if(billete == billetes){
-                defecto += billetes;
-            }
-            cantidadMonedas.add(Integer.valueOf(defecto));
-        }
-
-        this.monedas = cantidadBilletes;
-        this.billetes = cantidadMonedas;
     }
 
-    public ArrayList<Double> getMonedas() {
-        return monedas;
-    }
-
-    public void setMonedas(ArrayList<Double> monedas) {
-        this.monedas = monedas;
-    }
-
-    public ArrayList<Integer> getBilletes() {
+    public Map<Double, Double> getBilletes() {
         return billetes;
     }
 
-    public void setBilletes(ArrayList<Integer> billetes) {
-        this.billetes = billetes;
-    }
-
-    public int[] getTiposBilletes() {
-        return tiposBilletes;
-    }
-
-    public double[] getTiposMonedas() {
-        return tiposMonedas;
+    public Map<Double, Double> getMonedas() {
+        return monedas;
     }
 
     @Override
     public String toString() {
-        return "Deposito [monedas=" + monedas + ", billetes=" + billetes + ", tiposBilletes="
-                + Arrays.toString(tiposBilletes) + ", tiposMonedas=" + Arrays.toString(tiposMonedas) + ", getMonedas()="
-                + getMonedas() + ", getBilletes()=" + getBilletes() + ", getClass()=" + getClass()
-                + ", getTiposBilletes()=" + Arrays.toString(getTiposBilletes()) + ", getTiposMonedas()="
-                + Arrays.toString(getTiposMonedas()) + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+        return "Deposito [billetes=" + billetes + ", monedas=" + monedas + ", CANTIDAD_POR_DEFECTO="
+                + CANTIDAD_POR_DEFECTO + ", getClass()=" + getClass() + ", getBilletes()=" + getBilletes()
+                + ", getMonedas()=" + getMonedas() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
                 + "]";
     }
-
-    
 }

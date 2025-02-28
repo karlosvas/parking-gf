@@ -1,15 +1,10 @@
 package parking;
 
 public class Principal {
-    private double precioPorMinuto;      // Precio por minuto de estacionamiento
-    private Maquina maquina;             // Maquina de estacionamiento
-
-    // public Máquina(double precio, double minuto, ArrayList<Ticket> tickets, ArrayList<int[]> ticketsActivos) {
-    public Principal(double precioPorMinuto) {
-        maquina = new Maquina(precioPorMinuto);
-    }
+    private static double PRECIO_POR_MINUTO = 0.50;
 
     public static void main(String[] args) {
-        
+        Maquina maquina = new Maquina(PRECIO_POR_MINUTO);
+        Terminal terminal = new Terminal(maquina);
     }
 }
