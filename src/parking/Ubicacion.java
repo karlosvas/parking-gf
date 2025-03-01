@@ -10,6 +10,10 @@ public class Ubicacion {
         this.plaza = plaza;
     }
 
+    public Ubicacion() {
+    }
+
+    
     public int getPlanta() {
         return planta;
     }
