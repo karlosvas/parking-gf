@@ -12,11 +12,12 @@ public class Ticket {
         
     }
 
-    public Ticket(String matricula, LocalDate fechaHoraEntrada, Ubicacion Ubicacion) {
+    public Ticket(int id, String matricula, LocalDate fechaHoraEntrada, Ubicacion Ubicacion) {
         
         this.matricula = matricula;
         this.fechaHoraEntrada = fechaHoraEntrada;
         this.Ubicacion = Ubicacion;
+        this.id=id;
     }
 
     public int getId() {

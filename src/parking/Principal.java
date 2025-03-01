@@ -27,5 +27,10 @@ public class Principal {
                 new Terminal(maquina).setVisible(true);
             }
         });
+        
+        
+        
+        
+        
     }
 }
