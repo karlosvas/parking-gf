@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 public class Maquina {
     private Deposito deposito;
-    private ArrayList<Ticket> tickets;
-
+    private ArrayList<Ticket> tickets;   
+    private int capacidad;
+    private final int MAX_CAPACIDAD=60; 
+  
     public Maquina(double precioPorMinuto) {
         Deposito deposito = new Deposito();
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
@@ -28,7 +30,7 @@ public class Maquina {
         // Calculamos el id del ticket en el plano cartesiano
         int id = ubicacion.getPlanta() * 20 + ubicacion.getPlaza();
         
-        // Creamos el ticket y lo añadimos al array de tickets
+        // Creamos el ticket y lo aÃ±adimos al array de tickets
         Ticket ticket = new Ticket(id, matricula, fecha, ubicacion);
         this.tickets.add(ticket);
 
@@ -55,5 +57,13 @@ public class Maquina {
 
     public void setTickets(ArrayList<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Maquina [terminal=" + terminal + ", deposito=" + deposito + ", tickets=" + tickets +  ", getTerminal()=" + getTerminal() + ", getDeposito()=" + getDeposito()
+                + ", getTickets()=" + getTickets() + ", getClass()="
+                + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
     }
 }
