@@ -59,11 +59,11 @@ public class Maquina {
         this.tickets = tickets;
     }
 
-
     @Override
     public String toString() {
-        return "Maquina [terminal=" + terminal + ", deposito=" + deposito + ", tickets=" + tickets +  ", getTerminal()=" + getTerminal() + ", getDeposito()=" + getDeposito()
-                + ", getTickets()=" + getTickets() + ", getClass()="
-                + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+        return "Maquina{" + "deposito=" + deposito + ", tickets=" + tickets + ", capacidad=" + capacidad + ", MAX_CAPACIDAD=" + MAX_CAPACIDAD + '}';
     }
+
+
+    
 }
