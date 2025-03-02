@@ -1,6 +1,6 @@
 package parking;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Maquina {
@@ -26,10 +26,7 @@ public class Maquina {
      * 
      * @return Ticket generado
      */	
-    public Ticket generarTiket(String matricula, LocalDate fecha, Ubicacion ubicacion) {
-        // Calculamos el id del ticket en el plano cartesiano
-        int id = ubicacion.getPlanta() * 20 + ubicacion.getPlaza();
-        
+    public Ticket generarTiket(int id, String matricula, LocalDateTime fecha, Ubicacion ubicacion) {
         // Creamos el ticket y lo aÃ±adimos al array de tickets
         Ticket ticket = new Ticket(id, matricula, fecha, ubicacion);
         this.tickets.add(ticket);
