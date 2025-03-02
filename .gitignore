@@ -41,3 +41,14 @@ private.xml
 
 # Log files
 *.log
+
+# Maven specific
+target/                     # Directorio de salida de compilación y empaquetado
+pom.xml.tag                 # Archivos temporales generados durante releases
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties          # Propiedades de release
+dependency-reduced-pom.xml  # Generado por algunos plugins
+buildNumber.properties      # Propiedades de número de build
+.mvn/timing.properties      # Propiedades de tiempo
