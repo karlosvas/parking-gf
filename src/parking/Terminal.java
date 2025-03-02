@@ -5,11 +5,21 @@
 package parking;
 
 import java.awt.Dimension;
-import java.lang.reflect.Array;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Map;
+
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,6 +30,9 @@ public class Terminal extends javax.swing.JFrame {
     private static final Integer[][] parking=new Integer[3][20];
     private JTable tabla; //Control para mostrar la mastriz de enteros 
     private DefaultTableModel modeloTabla; //Contenedor de la matriz de enteros 
+    private JTable tablaTicket; //Control para mostrar la mastriz de enteros 
+    private DefaultTableModel modeloTablaTicket; //Contenedor de la matriz de enteros 
+    FondoPanel fondo = new FondoPanel();
 
     public Maquina maquina;
 
@@ -27,6 +40,8 @@ public class Terminal extends javax.swing.JFrame {
      * Creates new form Terminal2
      */
     public Terminal(Maquina maquina) {
+        this.setContentPane(fondo);
+        
         this.maquina = maquina;
         initComponents();
         setLocationRelativeTo(null);
@@ -39,8 +54,7 @@ public class Terminal extends javax.swing.JFrame {
             }
         }
         
-        mostrarMatriz();
-        
+        mostrarParking();
     }
 
     /**
@@ -64,7 +78,7 @@ public class Terminal extends javax.swing.JFrame {
         pagar = new javax.swing.JButton();
         eliminar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scroll_ticket = new javax.swing.JScrollPane();
         parking_esquema = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,7 +92,7 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
 
-        retirarvehiculo.setText("Retirar Vehículo");
+        retirarvehiculo.setText("Retirar Vehiculo");
         retirarvehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 retirarvehiculoActionPerformed(evt);
@@ -91,7 +105,7 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Mátricula:");
+        jLabel1.setText("Matricula:");
 
         text_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,25 +135,21 @@ public class Terminal extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(retirarvehiculo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                .addGap(55, 55, 55))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(pagar)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(96, 96, 96)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(76, 76, 76)
-                        .addComponent(eliminar))
+                    .addComponent(generaticket)
+                    .addComponent(pagar)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(generaticket)
-                            .addComponent(retirarvehiculo)
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(eliminar)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -148,9 +158,8 @@ public class Terminal extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(text_matricula, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                                     .addComponent(text_id, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                    .addComponent(text_billete))))
-                        .addGap(59, 59, 59)))
-                .addContainerGap())
+                                    .addComponent(text_billete))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,8 +170,8 @@ public class Terminal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text_matricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(retirarvehiculo)
+                .addGap(18, 18, 18)
+                .addComponent(pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,11 +181,11 @@ public class Terminal extends javax.swing.JFrame {
                     .addComponent(text_billete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(14, 14, 14)
+                .addComponent(retirarvehiculo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addGap(43, 43, 43)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(eliminar)
-                    .addComponent(pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(eliminar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -186,13 +195,13 @@ public class Terminal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(parking_esquema)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(parking_esquema, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addComponent(scroll_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,39 +209,46 @@ public class Terminal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(scroll_ticket, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(parking_esquema, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addComponent(parking_esquema, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void generaticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generaticketActionPerformed
-        Ubicacion u = new Ubicacion();
+        Ubicacion u=new Ubicacion(0,0);
+        int id = 0;
+
         boolean encontrado=false;
         for (int y = 0; y < parking.length; y++) {
              
             for (int x = 0; x < parking[y].length; x++) {
                 
                 if (parking[y][x] == 0 && encontrado==false) {
-                    u.setPlanta(y);
-                    u.setPlaza(x);
-                    parking[y][x] = y * 20 + x +1;//preguntar a chatGpt
+                    u=new Ubicacion(y,x);
+                    id = parking[y][x] = this.generarIdParking(x, y);
                     encontrado=true;
                     
                 }
             }
         }
 
-        maquina.generarTiket(this.text_matricula.getText(), LocalDate.now(), u);
-        mostrarMatriz();
+        // Este mÃ©todo devuelve el tiket
+        Ticket ticketmostrar=maquina.generarTiket(id, this.text_matricula.getText(), LocalDateTime.now(), u);
+        mostrarParking();
+        mostrarTicket(ticketmostrar);
     }//GEN-LAST:event_generaticketActionPerformed
-
+    
+    private int generarIdParking(int x,int y){
+       return y*20+x+1; 
+    }
+    
     private void retirarvehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retirarvehiculoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_retirarvehiculoActionPerformed
@@ -256,7 +272,7 @@ public class Terminal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private void mostrarMatriz() {
+    private void mostrarParking() {
 
         //configuramos los titulos de las columnas del JTable
         String[] titulosColumnas = new String[parking[0].length];
@@ -276,6 +292,50 @@ public class Terminal extends javax.swing.JFrame {
         this.repaint();
 
     }
+    
+    private void mostrarTicket(Ticket ticket){
+        System.out.println("Ticket: " + ticket);
+        Map<String, String> titulosList = new HashMap<>();
+        titulosList.put("ID", String.valueOf(ticket.getId()));
+        titulosList.put("Matricula", ticket.getMatricula());
+        titulosList.put("UbicaciÃ³n", ticket.getUbicacion().toString());
+
+        // Fechas LocalDate
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        titulosList.put("Fecha Entrada", ticket.getFechaHoraEntrada().format(formatter));
+         
+        String[] titulos = new String[titulosList.size()];    
+        
+        for (int i = 0; i < titulos.length; i++) {
+            titulos[i] = titulosList.keySet().toArray()[i].toString();
+        }
+        
+        String[][] contenidoTicket= new String[1][titulosList.size()];
+        int index = 0;
+        for (String key : titulosList.keySet()) {
+            contenidoTicket[0][index++] = titulosList.get(key);
+        }
+
+        //creamos el modelo de datos
+        modeloTablaTicket = new DefaultTableModel(contenidoTicket, titulos);
+
+        //creamos el JTable con ese modelo
+        tablaTicket = new JTable(modeloTablaTicket);
+        tablaTicket.getTableHeader().setPreferredSize(new Dimension(50, 35));
+         // Center the header text
+        ((DefaultTableCellRenderer) tablaTicket.getTableHeader().getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+
+        //damos al scroll el JTable para que se vea
+        this.scroll_ticket.setViewportView(tablaTicket);
+
+        //Para hacer como un refresco de la vista
+        this.repaint();
+    }
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton eliminar;
@@ -285,12 +345,24 @@ public class Terminal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton pagar;
     private javax.swing.JScrollPane parking_esquema;
     private javax.swing.JButton retirarvehiculo;
+    private javax.swing.JScrollPane scroll_ticket;
     private javax.swing.JTextField text_billete;
     private javax.swing.JTextField text_id;
     private javax.swing.JTextField text_matricula;
     // End of variables declaration//GEN-END:variables
+
+    class FondoPanel extends JPanel {
+        private Image imagen;
+        
+        @Override
+        public void paint(Graphics g){
+            imagen = new ImageIcon(getClass().getResource("/resources/fondo1.jpg")).getImage();
+            g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+            setOpaque(false);
+            super.paint(g);
+        }
+    }
 }

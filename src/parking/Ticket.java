@@ -1,19 +1,18 @@
 package parking;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Ticket {
     private int id;
     private String matricula;
-    private LocalDate fechaHoraEntrada; 
+    private LocalDateTime fechaHoraEntrada; 
     private Ubicacion Ubicacion;
     
     public void generarTicket(){
         
     }
 
-    public Ticket(int id, String matricula, LocalDate fechaHoraEntrada, Ubicacion Ubicacion) {
-        
+    public Ticket(int id, String matricula, LocalDateTime fechaHoraEntrada, Ubicacion Ubicacion) {
         this.matricula = matricula;
         this.fechaHoraEntrada = fechaHoraEntrada;
         this.Ubicacion = Ubicacion;
@@ -36,11 +35,11 @@ public class Ticket {
         this.matricula = matricula;
     }
 
-    public LocalDate getFechaHoraEntrada() {
+    public LocalDateTime getFechaHoraEntrada() {
         return fechaHoraEntrada;
     }
 
-    public void setFechaHoraEntrada(LocalDate fechaHoraEntrada) {
+    public void setFechaHoraEntrada(LocalDateTime fechaHoraEntrada) {
         this.fechaHoraEntrada = fechaHoraEntrada;
     }
 

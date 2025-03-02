@@ -6,12 +6,11 @@ public class Ubicacion {
     private int plaza;
 
     public Ubicacion(int planta, int plaza) {
-        this.planta = planta;
-        this.plaza = plaza;
+        this.planta = planta+1;
+        this.plaza = plaza+1;
     }
 
-    public Ubicacion() {
-    }
+    
 
     
     public int getPlanta() {
