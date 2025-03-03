@@ -1,7 +1,9 @@
 package com.gregorio.parking;
 
+import java.awt.AlphaComposite;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +29,6 @@ public class Terminal extends javax.swing.JFrame {
     private DefaultTableModel modeloTabla; //Contenedor de la matriz de enteros 
     private JTable tablaTicket; //Control para mostrar la mastriz de enteros 
     private DefaultTableModel modeloTablaTicket; //Contenedor de la matriz de enteros 
-    FondoPanel fondo = new FondoPanel();
 
     public Maquina maquina;
 
@@ -35,10 +36,23 @@ public class Terminal extends javax.swing.JFrame {
      * Creates new form Terminal2
      */
     public Terminal(Maquina maquina) {
-        this.setContentPane(fondo);
-        
+        // Atributos
         this.maquina = maquina;
+
+        // Fondo global
+        FondoPanel fondo = new FondoPanel("/background.jpg");
+        this.setContentPane(fondo);
+
+        // Inicio de componentes
         initComponents();
+        // Fondo de ticket
+        FondoPanel fondoTiket = new FondoPanel("/papel3.jpg");
+        this.scroll_ticket.setViewportView(fondoTiket);
+        // Fondo carretera
+        // Fondo de monitor
+
+
+        // Lo centramos
         setLocationRelativeTo(null);
         setTitle("Parking Terminal");
         // Para inicializar con 0 (en vez de null), necesitas hacerlo manualmente
@@ -61,7 +75,7 @@ public class Terminal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        monitor = new javax.swing.JPanel();
         generaticket = new javax.swing.JButton();
         retirarvehiculo = new javax.swing.JButton();
         text_matricula = new javax.swing.JTextField();
@@ -71,14 +85,13 @@ public class Terminal extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         text_billete = new javax.swing.JTextField();
         pagar = new javax.swing.JButton();
-        eliminar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         scroll_ticket = new javax.swing.JScrollPane();
         parking_esquema = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Parking"));
+        monitor.setBorder(javax.swing.BorderFactory.createTitledBorder("Parking"));
 
         generaticket.setText("Generar Ticket");
         generaticket.addActionListener(new java.awt.event.ActionListener() {
@@ -119,70 +132,60 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
 
-        eliminar.setIcon(new javax.swing.ImageIcon("src/main/resources/papelera.png"));
-        eliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eliminarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout monitorLayout = new javax.swing.GroupLayout(monitor);
+        monitor.setLayout(monitorLayout);
+        monitorLayout.setHorizontalGroup(
+            monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, monitorLayout.createSequentialGroup()
                 .addComponent(retirarvehiculo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                 .addGap(55, 55, 55))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(monitorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(generaticket)
                     .addComponent(pagar)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(monitorLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(eliminar)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(39, 39, 39)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(text_matricula, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                    .addComponent(text_id, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                    .addComponent(text_billete))))))
+                        .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(text_matricula, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(text_id, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(text_billete))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        monitorLayout.setVerticalGroup(
+            monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(monitorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(generaticket)
                 .addGap(4, 4, 4)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text_matricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text_billete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(14, 14, 14)
                 .addComponent(retirarvehiculo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(eliminar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
+
+        parking_esquema.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -191,11 +194,11 @@ public class Terminal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(parking_esquema, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(parking_esquema)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(monitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(scroll_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)))
+                        .addComponent(scroll_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 760, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -207,10 +210,10 @@ public class Terminal extends javax.swing.JFrame {
                         .addComponent(scroll_ticket, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(43, 43, 43)
-                .addComponent(parking_esquema, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(monitor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(parking_esquema, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(220, 220, 220))
         );
 
         pack();
@@ -260,35 +263,70 @@ public class Terminal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_pagarActionPerformed
 
-    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_eliminarActionPerformed
-
     /**
      * @param args the command line arguments
      */
     private void mostrarParking() {
-
-        //configuramos los titulos de las columnas del JTable
+        // Configuramos los títulos de las columnas del JTable
         String[] titulosColumnas = new String[parking[0].length];
         Arrays.fill(titulosColumnas, "");
-        //creamos el modelo de datos
+        
+        // Creamos el modelo de datos
         modeloTabla = new DefaultTableModel(parking, titulosColumnas);
-        //creamos el JTable con ese modelo
-
+        
+        // Creamos el JTable con ese modelo
         tabla = new JTable(modeloTabla);
-        //Ocultamos el encabezado 
+        
+        // Ocultamos el encabezado 
         tabla.getTableHeader().setVisible(false);
-
         tabla.getTableHeader().setPreferredSize(new Dimension(0, 0));
-        //damos al scroll el JTable para que se vea
-        this.parking_esquema.setViewportView(tabla);
-        //Para hacer como un refresco de la vista
-        this.repaint();
+        
+        // Hacemos la tabla transparente para que se vea el fondo
+        tabla.setOpaque(false);
+        tabla.setBackground(new java.awt.Color(0, 0, 0, 0));
+        
+        // Establecemos el tamaño de celda uniforme para mejor visualización
+        tabla.setRowHeight(50);
+        tabla.setRowMargin(20);
+        
+        // Creamos un renderer personalizado para colorear y centrar las celdas
+        DefaultTableCellRenderer customRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                java.awt.Component cell = super.getTableCellRendererComponent(
+                        table, value, isSelected, hasFocus, row, column);
+                
+                // Si la celda tiene un valor diferente de 0, la pintamos de verde
+                if (value != null && !value.equals(0)) {
+                    cell.setBackground(new java.awt.Color(144, 238, 144)); // Verde claro
+                    cell.setForeground(java.awt.Color.BLACK); // Texto negro
+                } else {
+                    cell.setBackground(new java.awt.Color(0, 0, 0, 0)); // Transparente
+                    cell.setForeground(java.awt.Color.BLACK);
+                }
+                
+                return cell;
+            }
+        };
+        
+        // Centramos el texto
+        customRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        // Aplicamos el renderer a todas las columnas
+        for (int i = 0; i < tabla.getColumnCount(); i++) {
+            tabla.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
+        }
 
+        // Añadimos la tabla al ScrollPane para que se muestre
+        parking_esquema.setViewportView(tabla);
+        
+        // Para hacer como un refresco de la vista
+        parking_esquema.revalidate();
+        this.repaint();
     }
     
-    private void mostrarTicket(Ticket ticket){
+    private void mostrarTicket(Ticket ticket) {
         System.out.println("Ticket: " + ticket);
         Map<String, String> titulosList = new HashMap<>();
         titulosList.put("ID", String.valueOf(ticket.getId()));
@@ -304,40 +342,51 @@ public class Terminal extends javax.swing.JFrame {
         for (String t : titulosList.keySet())
             titulos[i++] = t;
         
-        String[][] contenidoTicket= new String[1][titulosList.size()];
+        String[][] contenidoTicket = new String[1][titulosList.size()];
         int index = 0;
         for (String key : titulosList.keySet()) 
             contenidoTicket[0][index++] = titulosList.get(key);
-
-        //creamos el modelo de datos
+    
+        // Creamos el modelo de datos
         modeloTablaTicket = new DefaultTableModel(contenidoTicket, titulos);
-
-        //creamos el JTable con ese modelo
+    
+        // Creamos el JTable con ese modelo
         tablaTicket = new JTable(modeloTablaTicket);
         tablaTicket.getTableHeader().setPreferredSize(new Dimension(50, 35));
-         // Center the header text
+        // Center the header text
         ((DefaultTableCellRenderer) tablaTicket.getTableHeader().getDefaultRenderer())
             .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         
-
-        //damos al scroll el JTable para que se vea
-        this.scroll_ticket.setViewportView(tablaTicket);
-
-        //Para hacer como un refresco de la vista
+        // Hacemos la tabla transparente para que se vea el fondo
+        tablaTicket.setOpaque(false);
+        tablaTicket.setBackground(new java.awt.Color(0, 0, 0, 0));
+        
+        // Creamos un panel transparente que contenga la tabla
+        JPanel panelConTabla = new JPanel(new java.awt.BorderLayout());
+        panelConTabla.setOpaque(false); // Panel transparente
+        panelConTabla.add(tablaTicket.getTableHeader(), java.awt.BorderLayout.NORTH);
+        panelConTabla.add(tablaTicket, java.awt.BorderLayout.CENTER);
+        
+        // Recuperamos el panel de fondo que ya está establecido
+        FondoPanel fondoTicket = (FondoPanel) scroll_ticket.getViewport().getView();
+        fondoTicket.setLayout(new java.awt.BorderLayout());
+        
+        // Limpiamos componentes anteriores y añadimos la nueva tabla
+        fondoTicket.removeAll();
+        fondoTicket.add(panelConTabla, java.awt.BorderLayout.CENTER);
+        fondoTicket.revalidate();
+        
+        // Para hacer como un refresco de la vista
         this.repaint();
     }
     
-    
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton eliminar;
     private javax.swing.JButton generaticket;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel monitor;
     private javax.swing.JButton pagar;
     private javax.swing.JScrollPane parking_esquema;
     private javax.swing.JButton retirarvehiculo;
@@ -349,11 +398,41 @@ public class Terminal extends javax.swing.JFrame {
 
     class FondoPanel extends JPanel {
         private Image imagen;
+        private boolean transparente = false;
         
+        public FondoPanel(String imagePath) {
+            this(imagePath, false);
+        }
+        
+        public FondoPanel(String imagePath, boolean transparente) {
+            try {
+                
+                this.transparente = transparente;
+                java.net.URL url = getClass().getResource(imagePath);
+                if(url != null)
+                imagen = new ImageIcon(url).getImage();
+                else 
+                System.err.println("No se pudo cargar la imagen de fondo" + imagePath);
+            } catch (Exception e) {
+                System.out.println("Error al cargar la imagen de fondo: " + e.toString());
+            }
+        }
+    
         @Override
-        public void paint(Graphics g){
-            imagen = new ImageIcon("src/main/resources/fondo1.jpg").getImage();
-            g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+        public void paint(Graphics g) {
+            if (imagen != null) {
+                if (transparente) {
+                    // Dibuja con transparencia
+                    Graphics2D g2d = (Graphics2D) g;
+                    AlphaComposite alcom = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f); 
+                    g2d.setComposite(alcom);
+                    g2d.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+                    g2d.setComposite(AlphaComposite.SrcOver);
+                } else {
+                    // Dibuja normal
+                    g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
             setOpaque(false);
             super.paint(g);
         }
