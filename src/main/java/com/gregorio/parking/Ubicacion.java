@@ -4,6 +4,12 @@ public class Ubicacion {
     private int planta;
     private int plaza;
 
+    /**
+     * Constructor de la clase Ubicacion
+     * 
+     * @param planta
+     * @param plaza
+     */
     public Ubicacion(int planta, int plaza) {
         this.planta = planta+1;
         this.plaza = plaza+1;

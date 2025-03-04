@@ -9,6 +9,14 @@ public class Ticket {
     private LocalDateTime fechaHoraEntrada; 
     private Ubicacion Ubicacion;
 
+    /**
+     * Constructor de la clase Ticket
+     * 
+     * @param id identificador uncio del tiket
+     * @param matricula matricula del vehiculo
+     * @param fechaHoraEntrada fecha y hora de entrada del vehiculo
+     * @param Ubicacion ubicacion del vehiculo en el parking
+     */
     public Ticket(int id, String matricula, LocalDateTime fechaHoraEntrada, Ubicacion Ubicacion) {
         this.matricula = matricula;
         this.fechaHoraEntrada = fechaHoraEntrada;
@@ -16,17 +24,28 @@ public class Ticket {
         this.id=id;
     }
 
+    /**
+     * Metodo que busca un ticket por su id en una lista de tickets
+     * 
+     * @param id identificador del ticket
+     * @param listaTickets lista de tickets en la que buscar
+     * @return ticket encontrado o null si no se encuentra
+     */
     public static Ticket getTicketById(Integer id, ArrayList<Ticket> listaTickets){
         for (Ticket ticket : listaTickets) {
             if (ticket.getId() == id) {
-                System.out.println("Ticket encontrado: " + ticket);
                 return ticket;
             }
         }
-        System.out.println("Ticket no encontrado");
         return null;
     }
 
+    /**
+     * Metodo que genera un id unico para un parking en funcion de su ubicacion
+     * 
+     * @param ubicacion ubicacion del parking
+     * @return id unico del parking
+     */
     public static int generarIdParking(Ubicacion ubicacion){
         return (ubicacion.getPlanta()-1) * 20 + (ubicacion.getPlaza()-1) + 1; 
     }

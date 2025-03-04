@@ -41,21 +41,24 @@ public class Deposito {
             JOptionPane.showMessageDialog(null, "No puedes introducir valores negativos", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }else if(dineroIntroducido < precioTicket){
-            JOptionPane.showMessageDialog(null, "Dinero insuficiente te faltan " + (precioTicket - dineroIntroducido) + "â¬");
+            JOptionPane.showMessageDialog(null, "Dinero insuficiente te faltan " + (precioTicket - dineroIntroducido) + "€", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         // Creamos una copia de seguridad del dinero en caso de que no se pueda devolver el cambio
         Map<Double, Double> backup = new HashMap<>(dinero);
         try {
-            // Recivimos el dinero y lo guardamos en el depÃ³sito
+            // Recivimos el dinero y lo guardamos en el deposito
             this.recibirDinero(precioTicket);
 
-            // Cambio que deve devolber la mÃ¡quina (cambio)
-            double cambio = dineroIntroducido - precioTicket;
+            // Cambio que deve devolber la maquina (cambio)
+            double cambio =  precioTicket - dineroIntroducido ;
 
-            // Damos el cambio con el dinero disponible en el depÃ³sito
-            this.darCambio(cambio);
+            if(cambio > 0.0){
+                // Damos el cambio con el dinero disponible en el depOsito
+                this.darCambio(cambio);
+            }
+
             return true;
         } catch (DineroInsuficiente e) {
             dinero = backup;

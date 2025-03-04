@@ -2,6 +2,7 @@ package com.gregorio.parking;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import java.time.Duration;
 
 public class Maquina {
@@ -63,7 +64,7 @@ public class Maquina {
      * @param fechaSalida Fecha y hora de salida del vehiculo
      * @return Precio del ticket double
      */
-    public double caluclarPrecioTicket(Ticket ticket, LocalDateTime fechaSalida) {
+    public double calcularPrecioTicket(Ticket ticket, LocalDateTime fechaSalida) {
         // Obtenemos el tiempo de estancia en el parking
         LocalDateTime fechaTicketEntrada = ticket.getFechaHoraEntrada();
         // Con duration obtenemos la diferencia entre dos fechas y obtenemos cuantos minutos son
@@ -71,6 +72,24 @@ public class Maquina {
         int minutos = (int) duracion.toMinutes();
         // Calculamos el precio de todos los minutos trsncurridos
         return minutos* this.PRECIO_POR_MINUTO;
+    }
+
+    public Ticket generarTicket(Integer[][] parking, String matricula) {
+        boolean encontrado = false;
+        Ticket ticket = null;
+        for (int y = 0; y < parking.length && !encontrado; y++) {
+            for (int x = 0; x < parking[y].length && !encontrado; x++) {
+                if (parking[y][x] == 0) {
+                    // Obtenemos la ubicacion y el id si hay plaza libre, y actualizamos el array de parking
+                    Ubicacion ubicacion = new Ubicacion(y,x);
+                    int id = parking[y][x] = Ticket.generarIdParking(ubicacion);
+                    // Verificamos que la matricula no este repetida si no lo esta salimos del bucle
+                    ticket = new Ticket(id, matricula, LocalDateTime.now(), ubicacion);
+                    encontrado = true;
+                }
+            }
+        }
+        return ticket;
     }
 
     // GETTERS Y SETTERS
