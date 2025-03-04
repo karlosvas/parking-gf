@@ -2,6 +2,7 @@ package com.gregorio.parking;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.time.Duration;
 
 public class Maquina {
     /**
@@ -13,13 +14,15 @@ public class Maquina {
     private Deposito deposito;
     private ArrayList<Ticket> tickets;   
     private int capacidad;
-    private final int MAX_CAPACIDAD=60; 
+    private final int MAX_CAPACIDAD=60;
+    private final double PRECIO_POR_MINUTO;
   
-    public Maquina(double precioPorMinuto) {
+    public Maquina(double PRECIO_POR_MINUTO) {
         Deposito deposito = new Deposito();
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
         this.deposito = deposito;
         this.tickets = tickets;
+        this.PRECIO_POR_MINUTO = PRECIO_POR_MINUTO;
     }
 
     /**
@@ -44,11 +47,23 @@ public class Maquina {
     // public Ticket mostrarTicket(int id) {
     // }
 
-    // public void retirarTicket(int id) {
-    // }
+    public void retirarVehiculo(Ticket tiket) {
+        // Eliminamos el ticket del array de tickets
+        this.tickets.remove(tiket);
+    }
 
     // public void caluclarPrecio(Ticket ticket) {
     // }
+    
+    public double obtenerDinero(Ticket ticket, LocalDateTime fechaSalida) {
+        // Obtenemos el tiempo de estancia en el parking
+        LocalDateTime fechaTicketEntrada = ticket.getFechaHoraEntrada();
+        // Con duration obtenemos la diferencia entre dos fechas y obtenemos cuantos minutos son
+        Duration duracion = java.time.Duration.between(fechaTicketEntrada, fechaSalida);
+        int minutos = (int) duracion.toMinutes();
+        // Calculamos el precio de todos los minutos trsncurridos
+        return minutos* this.PRECIO_POR_MINUTO;
+    }
 
     // GETTERS Y SETTERS
     public Deposito getDeposito() {

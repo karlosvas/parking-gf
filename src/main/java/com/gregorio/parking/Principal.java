@@ -1,11 +1,6 @@
 package com.gregorio.parking;
 
 public class Principal {
-    /**
-     * (PRECIO_POR_MINUTO) Precio por minuto del parking
-     */
-    private static double PRECIO_POR_MINUTO = 0.50;
-
     public static void main(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -26,7 +21,7 @@ public class Principal {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Maquina maquina = new Maquina(PRECIO_POR_MINUTO);
+                Maquina maquina = new Maquina(0.50);
                 new Terminal(maquina).setVisible(true);
             }
         });
