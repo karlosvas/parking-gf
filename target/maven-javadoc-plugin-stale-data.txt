@@ -1,0 +1,45 @@
+@options
+@packages
+-encoding
+'UTF-8'
+-private
+--release
+18
+-sourcepath
+'C:/Users/Karlos/Documents/NetBeansProjects/Parking/src/main/java;C:/Users/Karlos/Documents/NetBeansProjects/Parking/target/generated-sources/annotations'
+-Xdoclint:none
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/Karlos/Documents/NetBeansProjects/Parking/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Parking 1.0-SNAPSHOT API'
+-nohelp
+-use
+-version
+-windowtitle
+'Parking 1.0-SNAPSHOT API'
+com.gregorio.parking
+com.gregorio.parking.exception
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\src\main\java = 1740958558360
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\generated-sources\annotations = 1740998044798
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\allclasses-index.html = 1740998048134
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\allpackages-index.html = 1740998048137
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\constant-values.html = 1740998048039
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\element-list = 1740998048003
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\index-all.html = 1740998048163
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\index.html = 1740998048118
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\member-search-index.js = 1740998048145
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\module-search-index.js = 1740998048138
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\overview-summary.html = 1740998048168
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\overview-tree.html = 1740998048113
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\package-search-index.js = 1740998048141
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\search.html = 1740998048166
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\serialized-form.html = 1740998048050
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\tag-search-index.js = 1740998048146
+C:\Users\Karlos\Documents\NetBeansProjects\Parking\target\apidocs\type-search-index.js = 1740998048143
