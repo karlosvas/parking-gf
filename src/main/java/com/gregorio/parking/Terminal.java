@@ -1,7 +1,11 @@
 package com.gregorio.parking;
 
 import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -10,10 +14,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import com.gregorio.parking.utils.ParseType;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
@@ -27,6 +33,12 @@ public class Terminal extends javax.swing.JFrame {
     private DefaultTableModel modeloTablaTicket; //Contenedor de la matriz de enteros 
     public Maquina maquina;
 
+    /**
+     * Constructor de la clase Terminal, que inicializa los componentes de la interfaz gráfica y se comunica
+     * con el usuario para generar tickets y retirar vehículos del parking.
+     * 
+     * @param maquina Objeto de la clase Maquina que contiene la lógica de negocio
+     */
     public Terminal(Maquina maquina) {
         // Atributos
         this.maquina = maquina;
@@ -48,11 +60,15 @@ public class Terminal extends javax.swing.JFrame {
         for (int i = 0; i < parking.length; i++) {
             for (int j = 0; j < parking[i].length; j++) {
                 parking[i][j] = 0;
-                
             }
         }
         
+        // Recargamos el array del parking para mostrarlo
         mostrarParking();
+        // Recargamos el array de deposito para mostrarlo
+        mostrarDeposito();
+
+        // Deshabilitamos los botones
         this.generaticket.setEnabled(false);
         this.retirarvehiculo.setEnabled(false);
     }
@@ -102,8 +118,8 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
         text_matricula.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                text_matriculaKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                text_matriculaKeyReleased(evt);
             }
         });
 
@@ -112,6 +128,9 @@ public class Terminal extends javax.swing.JFrame {
         jLabel2.setText("ID:");
 
         text_id.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                text_idKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 text_idKeyTyped(evt);
             }
@@ -164,11 +183,11 @@ public class Terminal extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        scroll_ticket.setToolTipText("tickets");
+        scroll_ticket.setToolTipText("Tickets");
 
-        parking_esquema.setToolTipText("");
+        parking_esquema.setToolTipText("Parking");
 
-        deposito.setToolTipText("");
+        deposito.setToolTipText("Deposito");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,9 +227,7 @@ public class Terminal extends javax.swing.JFrame {
      * @param evt Evento de tipo ActionEvent que se produce al hacer clic en el botón
      */
     private void generaticketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generaticketActionPerformed
-        // Generar ticket
-        
-        // Ubicacion del coche (ubicacion)
+        // Ubicacion del coche (ubicacion), identificador unico del tiket (id)
         Ubicacion ubicacion = new Ubicacion(0,0);
         int id = 0;
 
@@ -221,21 +238,28 @@ public class Terminal extends javax.swing.JFrame {
                 if (parking[y][x] == 0) {
                     // Obtenemos la ubicacion y el id si hay plaza libre
                     ubicacion = new Ubicacion(y,x);
-                    id = parking[y][x] = this.generarIdParking(x, y);
+                    id = parking[y][x] = Ticket.generarIdParking(ubicacion);
                     encontrado=true;
                 }
             }
         }
 
-        // Creamos el tiket correspondiente
+        // Si haz plazas libres mostramos un mensaje de error
+        if(id == 0){
+            JOptionPane.showMessageDialog(
+                this, 
+                "No hay plazas libres", 
+                "Error de validación", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Creamos el tiket correspondiente, y actualizamos la vista del parking y del ticket
         Ticket ticketmostrar=maquina.generarTiket(id, this.text_matricula.getText(), LocalDateTime.now(), ubicacion);
         mostrarParking();
-        mostrarTicket(ticketmostrar);
+        mostrarTickets(ticketmostrar, maquina.getTickets());
     }//GEN-LAST:event_generaticketActionPerformed
-    
-    private int generarIdParking(int x,int y){
-       return y*20+x+1; 
-    }
     
     private void retirarvehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retirarvehiculoActionPerformed
         // Obtenemos el id del ticket
@@ -302,34 +326,55 @@ public class Terminal extends javax.swing.JFrame {
         }
 
         // Pagamos en la maquina
-        maquina.getDeposito().procesarPago(dineroUsusario, precioTicket);
+        boolean pagadoCorrectamente = maquina.getDeposito().procesarPago(dineroUsusario, precioTicket);
+        if(!pagadoCorrectamente) return;
+
+        // Smotramos el tiket
         System.out.println(maquina.getDeposito());
 
         // Retiramos el viculo y actualizamos el array
         maquina.retirarVehiculo(selecionado);
         parking[selecionado.getUbicacion().getPlanta()-1][selecionado.getUbicacion().getPlaza()-1] = 0;
 
-        // Actualizamos el array de coches
+        // Actualizamos el array de coches y tickets
         mostrarParking();
+        mostrarTickets(selecionado, tickets);
+        mostrarDeposito();
     }//GEN-LAST:event_retirarvehiculoActionPerformed
 
     private void text_matriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_matriculaActionPerformed
        // TODO add your handling code here: 
     }//GEN-LAST:event_text_matriculaActionPerformed
 
+    /**
+     * Método que se ejecuta cuando se escribe en el campo de texto del ID
+     * @param evt Evento de tipo KeyEvent que se produce al escribir en el campo de texto
+     */
     private void text_idKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_text_idKeyTyped
-        if (!this.text_id.getText().isEmpty() || evt.getKeyChar() != '\b') 
-            this.retirarvehiculo.setEnabled(true);
-        else 
-            this.retirarvehiculo.setEnabled(false);
+       
     }//GEN-LAST:event_text_idKeyTyped
 
-    private void text_matriculaKeyTyped(java.awt.event.KeyEvent evt) {
-        if (!this.text_matricula.getText().isEmpty() || evt.getKeyChar() != '\b') 
+    private void text_idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_text_idKeyReleased
+        if (!this.text_id.getText().isEmpty()){
+            this.retirarvehiculo.setEnabled(true);
+            // Pintamos de verde el selecionado
+            Integer id = ParseType.parseInteger(this.text_id.getText());
+            if(id == null || id <= 0) return;
+            Ticket selected = Ticket.getTicketById(id, maquina.getTickets());
+
+            // Si existe el ticket lo pintamos de verde
+            if(selected != null)
+                mostrarTickets(selected, maquina.getTickets());
+        } else 
+            this.retirarvehiculo.setEnabled(false);
+    }//GEN-LAST:event_text_idKeyReleased
+
+    private void text_matriculaKeyReleased(java.awt.event.KeyEvent evt) {                                           
+        if (!this.text_matricula.getText().isEmpty()) 
             this.generaticket.setEnabled(true);
         else 
             this.generaticket.setEnabled(false);
-    }//GEN-LAST:event_text_matriculaKeyTyped
+    }                                                                                
 
     private void mostrarParking() {
         // Configuramos los títulos de las columnas del JTable
@@ -348,7 +393,7 @@ public class Terminal extends javax.swing.JFrame {
         
         // Hacemos la tabla transparente para que se vea el fondo
         tabla.setOpaque(false);
-        tabla.setBackground(new java.awt.Color(0, 0, 0, 0));
+        tabla.setBackground(new Color(0, 0, 0, 0));
         
         // Establecemos el tamaño de celda uniforme para mejor visualización
         tabla.setRowHeight(50);
@@ -356,26 +401,23 @@ public class Terminal extends javax.swing.JFrame {
         // Creamos un renderer personalizado para colorear y centrar las celdas
         DefaultTableCellRenderer customRenderer = new DefaultTableCellRenderer() {
             @Override
-            public java.awt.Component getTableCellRendererComponent(JTable table, Object value, 
+            public Component getTableCellRendererComponent(JTable table, Object value, 
                     boolean isSelected, boolean hasFocus, int row, int column) {
-                java.awt.Component cell = super.getTableCellRendererComponent(
+                Component cell = super.getTableCellRendererComponent(
                         table, value, isSelected, hasFocus, row, column);
                 
                 // Si la celda tiene un valor diferente de 0, la pintamos de verde
-                if (value != null && !value.equals(0)) {
-                    cell.setBackground(new java.awt.Color(144, 238, 144)); // Verde claro
-                    cell.setForeground(java.awt.Color.BLACK); // Texto negro
-                } else {
-                    cell.setBackground(new java.awt.Color(0, 0, 0, 0)); // Transparente
-                    cell.setForeground(java.awt.Color.BLACK);
-                }
+                if (value != null && !value.equals(0))
+                    cell.setBackground(new Color(144, 238, 144)); // Verde claro
+                else 
+                    cell.setBackground(new Color(0, 0, 0, 0)); // Transparente
                 
                 return cell;
             }
         };
         
         // Centramos el texto
-        customRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        customRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         
         // Aplicamos el renderer a todas las columnas
         for (int i = 0; i < tabla.getColumnCount(); i++) {
@@ -390,15 +432,15 @@ public class Terminal extends javax.swing.JFrame {
         this.repaint();
     }
     
-    private void mostrarTicket(Ticket ticket) {
-        System.out.println("Ticket: " + ticket);
-        Map<String, String> titulosList = new HashMap<>();
-        titulosList.put("ID", String.valueOf(ticket.getId()));
-        titulosList.put("Matricula", ticket.getMatricula());
-        titulosList.put("Ubicación", ticket.getUbicacion().toString());
+    private void mostrarTickets(Ticket ticketActual, ArrayList<Ticket> listTiket) {
+        System.out.println("Ticket: " + ticketActual);
+        Map<String, String> titulosList = new LinkedHashMap<>();
+        titulosList.put("ID", String.valueOf(ticketActual.getId()));
+        titulosList.put("Matricula", ticketActual.getMatricula());
+        titulosList.put("Ubicación", ticketActual.getUbicacion().toString());
         // Fechas LocalDate
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        titulosList.put("Fecha Entrada", ticket.getFechaHoraEntrada().format(formatter));
+        titulosList.put("Fecha Entrada", ticketActual.getFechaHoraEntrada().format(formatter));
          
         String[] titulos = new String[titulosList.size()];    
         
@@ -406,10 +448,15 @@ public class Terminal extends javax.swing.JFrame {
         for (String t : titulosList.keySet())
             titulos[i++] = t;
         
-        String[][] contenidoTicket = new String[1][titulosList.size()];
-        int index = 0;
-        for (String key : titulosList.keySet()) 
-            contenidoTicket[0][index++] = titulosList.get(key);
+        // Contenido de los tikets
+        String[][] contenidoTicket = new String[listTiket.size()][titulosList.size()];
+        for (int j = 0; j < listTiket.size(); j++) {
+            int posicionTicket = listTiket.size() - 1 - j;
+            contenidoTicket[j][0] = String.valueOf(listTiket.get(posicionTicket).getId());
+            contenidoTicket[j][1] = listTiket.get(posicionTicket).getMatricula();
+            contenidoTicket[j][2] = listTiket.get(posicionTicket).getUbicacion().toString();
+            contenidoTicket[j][3] = listTiket.get(posicionTicket).getFechaHoraEntrada().format(formatter);
+        }
     
         // Creamos el modelo de datos
         modeloTablaTicket = new DefaultTableModel(contenidoTicket, titulos);
@@ -425,25 +472,110 @@ public class Terminal extends javax.swing.JFrame {
         tablaTicket.setOpaque(false);
         tablaTicket.setBackground(new java.awt.Color(0, 0, 0, 0));
         
+        // Creamos un renderer personalizado para resaltar el ticket actual
+        DefaultTableCellRenderer customRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, 
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                Component cell = super.getTableCellRendererComponent(
+                        table, value, isSelected, hasFocus, row, column);
+                // Comprobamos si esta fila corresponde al ticket actual
+                String idCelda = (String) table.getValueAt(row, 0); // Columna ID
+                // Resaltamos la fila del ticket actual
+                if (idCelda.equals(String.valueOf(ticketActual.getId()))) 
+                    cell.setBackground(new Color(144, 238, 144)); // Verde claro
+                else 
+                    cell.setBackground(new Color(0, 0, 0, 0)); // Dejamos transparente el resto                    
+                return cell;
+            }
+        };
+        
+        // Centramos el texto
+        customRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        // Aplicamos el renderer a todas las columnas
+        for (int col = 0; col < tablaTicket.getColumnCount(); col++) {
+            tablaTicket.getColumnModel().getColumn(col).setCellRenderer(customRenderer);
+        }
+        
         // Creamos un panel transparente que contenga la tabla
-        JPanel panelConTabla = new JPanel(new java.awt.BorderLayout());
+        JPanel panelConTabla = new JPanel(new BorderLayout());
         panelConTabla.setOpaque(false); // Panel transparente
-        panelConTabla.add(tablaTicket.getTableHeader(), java.awt.BorderLayout.NORTH);
-        panelConTabla.add(tablaTicket, java.awt.BorderLayout.CENTER);
+        panelConTabla.add(tablaTicket.getTableHeader(), BorderLayout.NORTH);
+        panelConTabla.add(tablaTicket, BorderLayout.CENTER);
         
         // Recuperamos el panel de fondo que ya está establecido
         FondoPanel fondoTicket = (FondoPanel) scroll_ticket.getViewport().getView();
-        fondoTicket.setLayout(new java.awt.BorderLayout());
+        fondoTicket.setLayout(new BorderLayout());
         
         // Limpiamos componentes anteriores y añadimos la nueva tabla
         fondoTicket.removeAll();
-        fondoTicket.add(panelConTabla, java.awt.BorderLayout.CENTER);
+        fondoTicket.add(panelConTabla, BorderLayout.CENTER);
         fondoTicket.revalidate();
         
         // Para hacer como un refresco de la vista
         this.repaint();
     }
     
+    private void mostrarDeposito() {
+        Map<Double,Double> dinero = maquina.getDeposito().getDinero();
+        Double[] tiposCambio = Deposito.getTiposcambio();
+
+        String[] titulosColumnas = new String[tiposCambio.length+1];
+        int i = 0;
+        for (Double tipo : tiposCambio)
+            titulosColumnas[i++] = String.valueOf(tipo);
+        titulosColumnas[i] = "Total";
+        
+        String[][] contenido = new String[1][tiposCambio.length+1];
+        i = 0;
+        double total = 0;
+        for (Double tipo : tiposCambio) {
+            contenido[0][i] = String.valueOf(dinero.get(tipo));
+            total += dinero.get(tipo) * tipo;
+            i++;
+        }
+        contenido[0][i] = String.valueOf(total + "€");
+
+        // Creamos el modelo de datos
+        DefaultTableModel modeloTabla = new DefaultTableModel(contenido, titulosColumnas);
+        
+        // Creamos el JTable con ese modelo
+        JTable tabla = new JTable(modeloTabla);
+        
+        // Personalizamos el encabezado
+        tabla.getTableHeader().setPreferredSize(new Dimension(50, 35)); // Altura del header
+        ((DefaultTableCellRenderer) tabla.getTableHeader().getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER); // Centrar texto del header
+        // Fuente del header
+        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+
+        // Hacemos la tabla transparente para que se vea el fondo
+        tabla.setOpaque(false);
+        tabla.setBackground(new Color(0, 0, 0, 0));
+        
+        // Establecemos el tamaño de celda uniforme para mejor visualización
+        tabla.setRowHeight(50);
+        tabla.setRowMargin(20);
+
+        // Creamos un renderer personalizado para colorear y centrar las celdas
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        
+        // Centramos el texto
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        // Aplicamos el renderer a todas las columnas
+        for (int j = 0; j < tabla.getColumnCount(); j++) 
+            tabla.getColumnModel().getColumn(j).setCellRenderer(centerRenderer);
+
+        // Añadimos la tabla al ScrollPane para que se muestre
+        this.deposito.setViewportView(tabla);
+        
+        // Para hacer como un refresco de la vista
+        this.deposito.revalidate();
+        this.repaint();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane deposito;
     private javax.swing.JButton generaticket;

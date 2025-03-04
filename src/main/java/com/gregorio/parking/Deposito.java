@@ -35,14 +35,14 @@ public class Deposito {
      * @param precioTicket Dinero tiene que pagar para el ticket
      * @return cambio que se devuelve al usuario
      */
-    public void procesarPago(double dineroIntroducido, double precioTicket) {
+    public boolean procesarPago(double dineroIntroducido, double precioTicket) {
         // Si son valores invalidos, o el dinero introducido es menor que el precio del ticket lanzamos un mensaje de error
         if(dineroIntroducido < 0.0 || precioTicket < 0.0){
             JOptionPane.showMessageDialog(null, "No puedes introducir valores negativos", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }else if(dineroIntroducido < precioTicket){
             JOptionPane.showMessageDialog(null, "Dinero insuficiente te faltan " + (precioTicket - dineroIntroducido) + "â¬");
-            return;
+            return false;
         }
 
         // Creamos una copia de seguridad del dinero en caso de que no se pueda devolver el cambio
@@ -56,12 +56,15 @@ public class Deposito {
 
             // Damos el cambio con el dinero disponible en el depÃ³sito
             this.darCambio(cambio);
+            return true;
         } catch (DineroInsuficiente e) {
             dinero = backup;
             JOptionPane.showMessageDialog(null, "No hay cambio suficiente");
+            return false;
         } catch (Exception e) {
             dinero = backup;
             JOptionPane.showMessageDialog(null, "Error inesperado procesar el pago");
+            return false;
         }
     }
 

@@ -1,6 +1,7 @@
 package com.gregorio.parking;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Ticket {
     private int id;
@@ -13,6 +14,21 @@ public class Ticket {
         this.fechaHoraEntrada = fechaHoraEntrada;
         this.Ubicacion = Ubicacion;
         this.id=id;
+    }
+
+    public static Ticket getTicketById(Integer id, ArrayList<Ticket> listaTickets){
+        for (Ticket ticket : listaTickets) {
+            if (ticket.getId() == id) {
+                System.out.println("Ticket encontrado: " + ticket);
+                return ticket;
+            }
+        }
+        System.out.println("Ticket no encontrado");
+        return null;
+    }
+
+    public static int generarIdParking(Ubicacion ubicacion){
+        return (ubicacion.getPlanta()-1) * 20 + (ubicacion.getPlaza()-1) + 1; 
     }
 
     public int getId() {

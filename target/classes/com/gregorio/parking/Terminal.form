@@ -144,7 +144,7 @@
         <Component class="javax.swing.JTextField" name="text_matricula">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="text_matriculaActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="text_matriculaKeyTyped"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="text_matriculaKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
@@ -161,6 +161,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="text_id">
           <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="text_idKeyReleased"/>
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="text_idKeyTyped"/>
           </Events>
         </Component>
@@ -168,21 +169,21 @@
     </Container>
     <Container class="javax.swing.JScrollPane" name="scroll_ticket">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="tickets"/>
+        <Property name="toolTipText" type="java.lang.String" value="Tickets"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
     <Container class="javax.swing.JScrollPane" name="parking_esquema">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Parking"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
     <Container class="javax.swing.JScrollPane" name="deposito">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Deposito"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
