@@ -44,18 +44,26 @@ public class Maquina {
         return ticket;
     }
 
-    // public Ticket mostrarTicket(int id) {
-    // }
-
+    /**
+     * Metodo para retirar un vehiculo del parking
+     * 
+     * @param tiket Ticket del vehiculo a retirar
+     */
     public void retirarVehiculo(Ticket tiket) {
         // Eliminamos el ticket del array de tickets
         this.tickets.remove(tiket);
     }
 
-    // public void caluclarPrecio(Ticket ticket) {
-    // }
-    
-    public double obtenerDinero(Ticket ticket, LocalDateTime fechaSalida) {
+
+    /**
+     * Metodo para calcular el precio de un ticket
+     * 
+     * 
+     * @param ticket Ticket del vehiculo
+     * @param fechaSalida Fecha y hora de salida del vehiculo
+     * @return Precio del ticket double
+     */
+    public double caluclarPrecioTicket(Ticket ticket, LocalDateTime fechaSalida) {
         // Obtenemos el tiempo de estancia en el parking
         LocalDateTime fechaTicketEntrada = ticket.getFechaHoraEntrada();
         // Con duration obtenemos la diferencia entre dos fechas y obtenemos cuantos minutos son

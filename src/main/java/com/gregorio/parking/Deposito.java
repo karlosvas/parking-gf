@@ -35,14 +35,17 @@ public class Deposito {
      * @param precioTicket Dinero tiene que pagar para el ticket
      * @return cambio que se devuelve al usuario
      */
-    public double procesarPago(double dineroIntroducido, double precioTicket) {
+    public void procesarPago(double dineroIntroducido, double precioTicket) {
         // Si son valores invalidos, o el dinero introducido es menor que el precio del ticket lanzamos un mensaje de error
-        if(dineroIntroducido > 0.0 && precioTicket > 0.0)
+        if(dineroIntroducido < 0.0 || precioTicket < 0.0){
             JOptionPane.showMessageDialog(null, "No puedes introducir valores negativos", "Error", JOptionPane.ERROR_MESSAGE);
-        else if(dineroIntroducido < precioTicket)
+            return;
+        }else if(dineroIntroducido < precioTicket){
             JOptionPane.showMessageDialog(null, "Dinero insuficiente te faltan " + (precioTicket - dineroIntroducido) + "â¬");
+            return;
+        }
 
-            // Creamos una copia de seguridad del dinero en caso de que no se pueda devolver el cambio
+        // Creamos una copia de seguridad del dinero en caso de que no se pueda devolver el cambio
         Map<Double, Double> backup = new HashMap<>(dinero);
         try {
             // Recivimos el dinero y lo guardamos en el depÃ³sito
@@ -53,7 +56,6 @@ public class Deposito {
 
             // Damos el cambio con el dinero disponible en el depÃ³sito
             this.darCambio(cambio);
-            return cambio;
         } catch (DineroInsuficiente e) {
             dinero = backup;
             JOptionPane.showMessageDialog(null, "No hay cambio suficiente");
@@ -61,7 +63,6 @@ public class Deposito {
             dinero = backup;
             JOptionPane.showMessageDialog(null, "Error inesperado procesar el pago");
         }
-        return 0.0;
     }
 
      /**
@@ -119,7 +120,19 @@ public class Deposito {
 
     @Override
     public String toString() {
-        return "Deposito [dinero=" + dinero + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-                + ", getDinero()=" + getDinero() + ", toString()=" + super.toString() + "]";
+    StringBuilder sb = new StringBuilder("Depósito:\n");
+    sb.append("╔════════╦═════════════╗\n");
+    sb.append("║ Valor  ║  Cantidad   ║\n");
+    sb.append("╠════════╬═════════════╣\n");
+    double total = 0;
+    for (Map.Entry<Double, Double> entry : dinero.entrySet()) {
+        sb.append(String.format("║ %5.2f€ ║  %10.0f ║\n", 
+                  entry.getKey(), entry.getValue()));
+                  total += entry.getKey() * entry.getValue();
     }
+    sb.append("╠════════╬═════════════╣\n");
+    sb.append(String.format("║ TOTAL  ║ %10.2f€ ║\n", total));
+    sb.append("╚════════╩═════════════╝");
+    return sb.toString();
+}
 }

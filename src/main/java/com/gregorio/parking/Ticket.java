@@ -7,9 +7,6 @@ public class Ticket {
     private String matricula;
     private LocalDateTime fechaHoraEntrada; 
     private Ubicacion Ubicacion;
-    
-    // public void generarTicket(){
-    // }
 
     public Ticket(int id, String matricula, LocalDateTime fechaHoraEntrada, Ubicacion Ubicacion) {
         this.matricula = matricula;
