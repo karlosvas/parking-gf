@@ -37,7 +37,7 @@ public class Maquina {
      * @return Ticket generado
      */	
     public Ticket generarTiket(int id, String matricula, LocalDateTime fecha, Ubicacion ubicacion) {
-        // Creamos el ticket y lo anÂ±adimos al array de tickets
+        // Creamos el ticket y lo añadimos al array de tickets
         Ticket ticket = new Ticket(id, matricula, fecha, ubicacion);
         this.tickets.add(ticket);
 
@@ -70,7 +70,7 @@ public class Maquina {
         // Con duration obtenemos la diferencia entre dos fechas y obtenemos cuantos minutos son
         Duration duracion = java.time.Duration.between(fechaTicketEntrada, fechaSalida);
         int minutos = (int) duracion.toMinutes();
-        // Calculamos el precio de todos los minutos trsncurridos
+        // Calculamos el precio de todos los minutos transcurridos
         return minutos* this.PRECIO_POR_MINUTO;
     }
 

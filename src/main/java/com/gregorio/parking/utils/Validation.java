@@ -29,7 +29,7 @@ public class Validation {
     }
 
     /**
-     * Metodo que valida si un String es un número decimal
+     * Método que valida si un String es un número decimal
      * 
      * @param input String a validar
      * @return Double si el String es un número decimal, null si no lo es
@@ -45,7 +45,7 @@ public class Validation {
     }
 
     /**
-     * Metodo que valida si un String es una fecha y hora en formato dd/MM/yyyy HH:mm:ss
+     * Método que valida si un String es una fecha y hora en formato dd/MM/yyyy HH:mm:ss
      * 
      * @param input String a validar
      * @return LocalDateTime si el String es una fecha y hora en formato dd/MM/yyyy HH:mm:ss, null si no lo es
@@ -61,10 +61,10 @@ public class Validation {
     }
 
     /**
-     * Metodo que valida si un String es una matrícula en formato cuatro numeros y tres letras mayusculas
+     *Método que valida si un String es una matrícula en formato cuatro numeros y tres letras mayusculas
      * 
      * @param matricula String a validar
-     * @return true si el String es una matrícula en formato cuatro numeros y tres letras mayusculas, false si no lo es
+     * @return true si el String es una matrícula en formato cuatro números y tres letras mayúsculas, false si no lo es
      */
     public static boolean validarMatricula(String matricula) {
         return matricula.matches("[0-9]{4}[A-Z]{3}");

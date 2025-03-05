@@ -5,18 +5,20 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import com.gregorio.parking.utils.FondoPanel;
 import com.gregorio.parking.utils.Validation;
-import java.util.LinkedHashMap;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 
@@ -65,6 +67,7 @@ public class Terminal extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         monitor = new javax.swing.JPanel();
         generaticket = new javax.swing.JButton();
         retirarvehiculo = new javax.swing.JButton();
@@ -75,6 +78,7 @@ public class Terminal extends javax.swing.JFrame {
         text_id = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         fecha = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
         scroll_ticket = new javax.swing.JScrollPane();
         parking_esquema = new javax.swing.JScrollPane();
         deposito = new javax.swing.JScrollPane();
@@ -108,8 +112,10 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel1.setText("Matricula:");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel2.setText("ID:");
 
         text_id.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -121,7 +127,8 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Fecha");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel3.setText("Fecha Salida:");
 
         fecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,39 +136,41 @@ public class Terminal extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel5.setText("(1111ABC)");
+
         javax.swing.GroupLayout monitorLayout = new javax.swing.GroupLayout(monitor);
         monitor.setLayout(monitorLayout);
         monitorLayout.setHorizontalGroup(
             monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, monitorLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-                .addGap(55, 55, 55))
             .addGroup(monitorLayout.createSequentialGroup()
                 .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(monitorLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addGap(77, 77, 77)
-                        .addComponent(fecha))
+                        .addGap(14, 14, 14)
+                        .addComponent(generaticket))
                     .addGroup(monitorLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(retirarvehiculo)
                             .addGroup(monitorLayout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(generaticket))
-                            .addGroup(monitorLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(retirarvehiculo))
-                            .addGroup(monitorLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
                                 .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
-                                .addGap(39, 39, 39)
-                                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(text_matricula, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                    .addComponent(text_id))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(text_matricula, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(monitorLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fecha)
+                            .addGroup(monitorLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(49, 49, 49))
+                            .addComponent(text_id, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         monitorLayout.setVerticalGroup(
@@ -169,23 +178,29 @@ public class Terminal extends javax.swing.JFrame {
             .addGroup(monitorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(generaticket)
-                .addGap(4, 4, 4)
+                .addGap(18, 18, 18)
                 .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(text_matricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(retirarvehiculo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(text_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(monitorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(monitorLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(monitorLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addContainerGap(58, Short.MAX_VALUE))))
         );
 
         scroll_ticket.setToolTipText("Tickets");
@@ -214,10 +229,10 @@ public class Terminal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scroll_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                    .addComponent(scroll_ticket, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                     .addComponent(monitor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(parking_esquema, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addComponent(parking_esquema, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(deposito, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
@@ -499,45 +514,102 @@ public class Terminal extends javax.swing.JFrame {
             return;
         }
 
-        // Cantidad que el usuario deve pagar
+        // Cantidad que el usuario debe pagar
         JOptionPane.showMessageDialog(this, "   Pagar: " + precioTicket + "€");
 
-        // Cantidad que el usuario paga
-        String dineroUsuario = JOptionPane.showInputDialog("Introduce el dinero, en formato double (0.0)");
-        Double dineroUsusario= Validation.parseDouble(dineroUsuario);
-        if(dineroUsuario == null || dineroUsusario < 0){
-            JOptionPane.showMessageDialog(
-                this, 
-                "Introduce un valor valido",
-                 "Error de validación", JOptionPane.ERROR_MESSAGE
-            );
-            return;
+
+        // // Cantidad que el usuario paga
+      
+        // Double dineroUsusario= Validation.parseDouble(dineroUsuario);
+        // if(dineroUsuario == null || dineroUsusario < 0){
+        //     JOptionPane.showMessageDialog(
+        //         this, 
+        //         "Introduce un valor valido",
+        //          "Error de validación", JOptionPane.ERROR_MESSAGE
+        //     );
+        //     return;
+        // }
+        
+         // 9 filas para 9 denominaciones
+        JPanel panel = new JPanel(new GridLayout(9, 2)); 
+        JTextField veintebillete = new JTextField("0", 5);
+        JTextField diezbillete = new JTextField("0", 5);
+        JTextField cincobillete = new JTextField("0", 5);
+        JTextField unomoneda = new JTextField("0", 5);
+        JTextField dosmoneda = new JTextField("0", 5);
+        JTextField cincuentacent = new JTextField("0", 5);
+        JTextField veintecent = new JTextField("0", 5);
+        JTextField diezcent = new JTextField("0", 5);
+        JTextField cincocent = new JTextField("0", 5);
+
+        panel.add(new JLabel("20€"));
+        panel.add(veintebillete);
+        panel.add(new JLabel("10€"));
+        panel.add(diezbillete);
+        panel.add(new JLabel("5€"));
+        panel.add(cincobillete);
+        panel.add(new JLabel("2€"));
+        panel.add(dosmoneda);
+        panel.add(new JLabel("1€"));
+        panel.add(unomoneda);
+        panel.add(new JLabel("0.50€"));
+        panel.add(cincuentacent);
+        panel.add(new JLabel("0.20€"));
+        panel.add(veintecent);
+        panel.add(new JLabel("0.10€"));
+        panel.add(diezcent);
+        panel.add(new JLabel("0.05€"));
+        panel.add(cincocent);
+
+        int resultado = JOptionPane.showConfirmDialog(this, panel, 
+                    "Total a pagar: " + precioTicket + "€", JOptionPane.OK_CANCEL_OPTION);
+
+        if (resultado == JOptionPane.OK_OPTION) {
+            Double[] listaBilletesIntroducidos = new Double[9];
+            listaBilletesIntroducidos[0] = Validation.parseDouble(veintebillete.getText());
+            listaBilletesIntroducidos[1] = Validation.parseDouble(diezbillete.getText());
+            listaBilletesIntroducidos[2] = Validation.parseDouble(cincobillete.getText());
+            listaBilletesIntroducidos[3] = Validation.parseDouble(dosmoneda.getText());
+            listaBilletesIntroducidos[4] = Validation.parseDouble(unomoneda.getText());
+            listaBilletesIntroducidos[5] = Validation.parseDouble(cincuentacent.getText());
+            listaBilletesIntroducidos[6] = Validation.parseDouble(veintecent.getText());
+            listaBilletesIntroducidos[7] = Validation.parseDouble(diezcent.getText());
+            listaBilletesIntroducidos[8] = Validation.parseDouble(cincocent.getText());
+
+            double totalPagado = 0;
+            Double[] tiposCambio = Deposito.getTiposcambio();
+            int i = 0;
+            for(Double billete : listaBilletesIntroducidos)
+                totalPagado += billete * tiposCambio[i++];
+               
+            boolean pagadoCorrectamente = maquina.getDeposito().procesarPago(totalPagado, precioTicket, listaBilletesIntroducidos);
+    
+            if(!pagadoCorrectamente) {
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "No se ha pagado correctamente", 
+                    "Error de validación", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            // Mostramos el deposito por consola para ver que se ha pagado correctamente
+            System.out.println(maquina.getDeposito());
+
+            // Retiramos el viculo y actualizamos el array
+            maquina.retirarVehiculo(selecionado);
+            parking[selecionado.getUbicacion().getPlanta()-1][selecionado.getUbicacion().getPlaza()-1] = 0;
+
+            // Actualizamos los datos de la vista
+            mostrarParking();
+            mostrarTickets(selecionado, tickets);
+            mostrarDeposito();
         }
+            
 
-        // Pagamos en el doposito de la maquina, si no se paga correctamente se cancela la operacion
-        boolean pagadoCorrectamente = maquina.getDeposito().procesarPago(dineroUsusario, precioTicket);
-        if(!pagadoCorrectamente) {
-            JOptionPane.showMessageDialog(
-                this, 
-                "No se ha pagado correctamente", 
-                "Error de validación", 
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
-
-        // Mostramos el deposito por consola para ver que se ha pagado correctamente
-        System.out.println(maquina.getDeposito());
-
-        // Retiramos el viculo y actualizamos el array
-        maquina.retirarVehiculo(selecionado);
-        parking[selecionado.getUbicacion().getPlanta()-1][selecionado.getUbicacion().getPlaza()-1] = 0;
-
-        // Actualizamos los datos de la vista
-        mostrarParking();
-        mostrarTickets(selecionado, tickets);
-        mostrarDeposito();
     }//GEN-LAST:event_retirarvehiculoActionPerformed
+
 
     private void text_matriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_matriculaActionPerformed
        // TODO add your handling code here: 
@@ -589,6 +661,7 @@ public class Terminal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel monitor;
     private javax.swing.JScrollPane parking_esquema;
     private javax.swing.JButton retirarvehiculo;
