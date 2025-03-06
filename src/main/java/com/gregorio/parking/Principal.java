@@ -5,7 +5,7 @@ package com.gregorio.parking;
  */
 public class Principal {
     /**
-     * @UIManager.LookAndFeelInfo Busca y establece el aspecto y la sensación de la aplicación
+     * @UIManager.LookAndFeelInfo Busca y establece el aspecto y la sensacion de la aplicacion
      *  buscando si existe el aspecto Nimbus para establecerlo, si no, se establece el aspecto por defecto
      */
     public static void main(String[] args) {

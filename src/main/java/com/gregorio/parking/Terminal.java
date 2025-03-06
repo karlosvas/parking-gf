@@ -43,8 +43,8 @@ public class Terminal extends javax.swing.JFrame {
         // Inicio de componentes
         initComponents();
         // Fondo de ticket
-        FondoPanel fondoTiket = new FondoPanel("/papel3.jpg");
-        this.scroll_ticket.setViewportView(fondoTiket);
+        FondoPanel fondoTicket = new FondoPanel("/papel3.jpg");
+        this.scroll_ticket.setViewportView(fondoTicket);
 
         // Lo centramos
         setLocationRelativeTo(null);
@@ -65,6 +65,9 @@ public class Terminal extends javax.swing.JFrame {
         this.fecha.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
     }
 
+    /**
+     * Metodo que se encarga de iniciar todos los componentes de la interfaz grafica.
+     */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -133,6 +136,11 @@ public class Terminal extends javax.swing.JFrame {
         fecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fechaActionPerformed(evt);
+            }
+        });
+        fecha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fechaKeyReleased(evt);
             }
         });
 
@@ -241,6 +249,10 @@ public class Terminal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    /**
+     * Muestra el parking en la interfaz del Jpanel y pinta de verde las plazas ocupadas.
+     * utiliza el arry de arrays de parking para mostrarlo.
+     */
     private void mostrarParking() {
         // Configuramos los títulos de las columnas del JTable
         String[] titulosColumnas = new String[parking[0].length];
@@ -261,7 +273,7 @@ public class Terminal extends javax.swing.JFrame {
         tabla.setBackground(new Color(0, 0, 0, 0));
         
         // Establecemos el tamaño de celda uniforme para mejor visualizacion
-        tabla.setRowHeight(50);
+        tabla.setRowHeight(45);
         tabla.setRowMargin(20);
         
         // Creamos un renderer personalizado para colorear y centrar las celdas
@@ -293,7 +305,12 @@ public class Terminal extends javax.swing.JFrame {
         this.repaint();
     }
     
-    private void mostrarTickets(Ticket ticketActual, ArrayList<Ticket> listTiket) {
+    /**
+     * Muestra los tickets en la vista de la terminal, resaltando el ticket actual en verde.
+     * @param ticketActual Ticket actual que se está procesando
+     * @param listTicket Lista de tickets a mostrar
+     */
+    private void mostrarTickets(Ticket ticketActual, ArrayList<Ticket> listTicket) {
         // Títulos de las columnas
         String[] titulosColumnas = {"ID", "Matricula", "Ubicación", "Fecha Entrada"};
         titulosColumnas[0] = "ID";
@@ -301,15 +318,15 @@ public class Terminal extends javax.swing.JFrame {
         titulosColumnas[2] = "Ubicación";
         titulosColumnas[3] = "Fecha Entrada";
 
-        // Contenido de los tikets
+        // Contenido de los tickets
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        String[][] contenidoTicket = new String[listTiket.size()][titulosColumnas.length];
-        for (int j = 0; j < listTiket.size(); j++) {
-            int posicionTicket = listTiket.size() - 1 - j;
-            contenidoTicket[j][0] = String.valueOf(listTiket.get(posicionTicket).getId());
-            contenidoTicket[j][1] = listTiket.get(posicionTicket).getMatricula();
-            contenidoTicket[j][2] = listTiket.get(posicionTicket).getUbicacion().toString();
-            contenidoTicket[j][3] = listTiket.get(posicionTicket).getFechaHoraEntrada().format(formatter);
+        String[][] contenidoTicket = new String[listTicket.size()][titulosColumnas.length];
+        for (int j = 0; j < listTicket.size(); j++) {
+            int posicionTicket = listTicket.size() - 1 - j;
+            contenidoTicket[j][0] = String.valueOf(listTicket.get(posicionTicket).getId());
+            contenidoTicket[j][1] = listTicket.get(posicionTicket).getMatricula();
+            contenidoTicket[j][2] = listTicket.get(posicionTicket).getUbicacion().toString();
+            contenidoTicket[j][3] = listTicket.get(posicionTicket).getFechaHoraEntrada().format(formatter);
         }
     
         // Creamos el modelo de datos
@@ -368,7 +385,9 @@ public class Terminal extends javax.swing.JFrame {
         // Para hacer como un refresco de la vista
         this.repaint();
     }
-    
+    /**
+     * Muestra el deposito en la interfaz del Jpanel
+     */
     private void mostrarDeposito() {
         Map<Double,Double> dinero = maquina.getDeposito().getDinero();
         Double[] tiposCambio = Deposito.getTiposcambio();
@@ -435,7 +454,8 @@ public class Terminal extends javax.swing.JFrame {
         
         // Buscamos si hemos encontrado algun hueco libre
         Ticket encontradoId = maquina.generarTicket(parking, this.text_matricula.getText());
-        // Si haz plazas libres mostramos un mensaje de error
+
+        // Si no hay plazas libres mostramos un mensaje de error
         if(encontradoId == null){
             JOptionPane.showMessageDialog(
                 this, 
@@ -444,6 +464,7 @@ public class Terminal extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE
             );
             return;
+            //En caso de que la matricula este repetida mensaje de error        
         } else if(Validation.matriculaRepettida(this.text_matricula.getText(), listaTickets)) {
             JOptionPane.showMessageDialog(
                 this, 
@@ -455,7 +476,11 @@ public class Terminal extends javax.swing.JFrame {
             return;
         }
 
-        // SI todo a salido bien añadimos el ticket a la lista de tickets
+        // Actualizamos la fecha a la generada por el ticket nuevo, ya que si se genera un ticket en esa fecha quiere decir que es esa fecha
+        // Añadimos un segundo para que sea un segundo mas que el ticket de entrada y no de error al retirarlo
+        this.fecha.setText(LocalDateTime.now().plusSeconds(1).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+
+        // Si todo a salido bien añadimos el ticket a la lista de tickets
         listaTickets.add(encontradoId);
         maquina.setTickets(listaTickets);
 
@@ -467,43 +492,26 @@ public class Terminal extends javax.swing.JFrame {
     }//GEN-LAST:event_generaticketActionPerformed
     
     private void retirarvehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retirarvehiculoActionPerformed
-        // Obtenemos el id del ticket
+        // Ya estan validados porque solo se puede entrar aqui si id y fecha son correctos
+        // Obtenemos el id del ticket (id)
         Integer id = Validation.parseInteger(this.text_id.getText());
-        if(id == null){
-            JOptionPane.showMessageDialog(
-                this, 
-                "Introduce un ID válido", 
-                "Error de validación", 
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        } 
+        // Obtenemos la fecha de salida (fechaFin)
+        LocalDateTime fechaFin = Validation.parseLocalDateTime(this.fecha.getText());
        
-        // Obtenemos la fecha de salida
-        LocalDateTime fecha = Validation.parseLocalDateTime(this.fecha.getText());
-        if(fecha == null){
-            // Versión básica con icono de error y título
-            JOptionPane.showMessageDialog(
-                this, 
-                "Introduce una fecha valida", 
-                "Error de validación", 
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
 
-        // Buscamos el ticket en la lista de tickets
+        // Buscamos el ticket en la lista de tickets (tickets)
         ArrayList<Ticket> tickets = maquina.getTickets();
+        // Precio que el usuario va a tener que pagar
         double precioTicket = 0;
         Ticket selecionado = null;    
         for (Ticket ticket : tickets) {
             if (id == ticket.getId()) {
-                precioTicket = maquina.calcularPrecioTicket(ticket, fecha);
+                precioTicket = maquina.calcularPrecioTicket(ticket, fechaFin);
                 selecionado = ticket;
                 break;
             }
         }
-
+        
         if(selecionado == null){
             JOptionPane.showMessageDialog(
                 this, 
@@ -513,24 +521,23 @@ public class Terminal extends javax.swing.JFrame {
             );
             return;
         }
+        
+        // Si la fecha no existe o es menor que la de entrada
+        if(fechaFin.isBefore(selecionado.getFechaHoraEntrada())) {
+            // Versión basica con icono de error y título
+            JOptionPane.showMessageDialog(
+                this, 
+                "La fecha de salida no puede ser menor o igual que la fecha de entrada", 
+                "Error de validación", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
 
         // Cantidad que el usuario debe pagar
         JOptionPane.showMessageDialog(this, "   Pagar: " + precioTicket + "€");
-
-
-        // // Cantidad que el usuario paga
-      
-        // Double dineroUsusario= Validation.parseDouble(dineroUsuario);
-        // if(dineroUsuario == null || dineroUsusario < 0){
-        //     JOptionPane.showMessageDialog(
-        //         this, 
-        //         "Introduce un valor valido",
-        //          "Error de validación", JOptionPane.ERROR_MESSAGE
-        //     );
-        //     return;
-        // }
         
-         // 9 filas para 9 denominaciones
+         // Creamos un panel con los billetes y monedas que se pueden introducir
         JPanel panel = new JPanel(new GridLayout(9, 2)); 
         JTextField veintebillete = new JTextField("0", 5);
         JTextField diezbillete = new JTextField("0", 5);
@@ -542,6 +549,7 @@ public class Terminal extends javax.swing.JFrame {
         JTextField diezcent = new JTextField("0", 5);
         JTextField cincocent = new JTextField("0", 5);
 
+        // Añadimos los campos al panel
         panel.add(new JLabel("20€"));
         panel.add(veintebillete);
         panel.add(new JLabel("10€"));
@@ -561,9 +569,11 @@ public class Terminal extends javax.swing.JFrame {
         panel.add(new JLabel("0.05€"));
         panel.add(cincocent);
 
+        // Obtenemos el resultado de la ventana
         int resultado = JOptionPane.showConfirmDialog(this, panel, 
                     "Total a pagar: " + precioTicket + "€", JOptionPane.OK_CANCEL_OPTION);
 
+        // Si el usuario pulsa OK se procesa el pago
         if (resultado == JOptionPane.OK_OPTION) {
             Double[] listaBilletesIntroducidos = new Double[9];
             listaBilletesIntroducidos[0] = Validation.parseDouble(veintebillete.getText());
@@ -576,12 +586,17 @@ public class Terminal extends javax.swing.JFrame {
             listaBilletesIntroducidos[7] = Validation.parseDouble(diezcent.getText());
             listaBilletesIntroducidos[8] = Validation.parseDouble(cincocent.getText());
 
+            // Total pagado por el usuario (totalPagado)
             double totalPagado = 0;
+            // Obtenemos los tipos de cambio almacenado en deposito (tiposCambio)
             Double[] tiposCambio = Deposito.getTiposcambio();
+            // Multiplicamos los billetes introducidos por los tipos de cambio y sumamos el total,
+            // los dos estan ordenados de la misma forma de mayor a menor
             int i = 0;
             for(Double billete : listaBilletesIntroducidos)
                 totalPagado += billete * tiposCambio[i++];
                
+            // Procesamos el pago
             boolean pagadoCorrectamente = maquina.getDeposito().procesarPago(totalPagado, precioTicket, listaBilletesIntroducidos);
     
             if(!pagadoCorrectamente) {
@@ -610,22 +625,21 @@ public class Terminal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_retirarvehiculoActionPerformed
 
-
     private void text_matriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_matriculaActionPerformed
-       // TODO add your handling code here: 
     }//GEN-LAST:event_text_matriculaActionPerformed
 
     private void text_idKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_text_idKeyTyped
     }//GEN-LAST:event_text_idKeyTyped
 
+    /**
+     * Comprueba si el ID introducido es valido y habilita el boton de retirar vehículo.
+     * @param evt KeyEvent que se produce al escribir en el campo de ID
+     */
     private void text_idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_text_idKeyReleased
-        // Si el campo de ID y fecha no están vacíos, habilitamos el botón de retirar vehiculo
-        if (!this.text_id.getText().isEmpty() && !this.fecha.getText().isEmpty()) {
+        // Si el campo de ID y fecha no estan vacios, habilitamos el boton de retirar vehiculo
+        Integer id = Validation.parseInteger(this.text_id.getText());
+        if (id != null && id > 0) {
             this.retirarvehiculo.setEnabled(true);
-            // Pintamos de verde el selecionado
-            Integer id = Validation.parseInteger(this.text_id.getText());
-            if(id == null || id <= 0)
-                return;
 
             // Buscamos el ticket en la lista de tickets
             Ticket selected = Ticket.getTicketById(id, maquina.getTickets());
@@ -638,9 +652,24 @@ public class Terminal extends javax.swing.JFrame {
     }//GEN-LAST:event_text_idKeyReleased
 
     private void fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_fechaActionPerformed
-
+    
+    /**
+     * Comprueba si la fecha introducida es valida y habilita el boton de retirar vehículo.
+     * @param evt KeyEvent que se produce al escribir en el campo de fecha
+     */
+    private void fechaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaKeyReleased
+        LocalDateTime fechaFin = Validation.parseLocalDateTime(this.fecha.getText());
+        if (fechaFin != null)
+            this.retirarvehiculo.setEnabled(true);
+        else 
+            this.retirarvehiculo.setEnabled(false);
+    }//GEN-LAST:event_fechaKeyReleased
+   
+    /**
+     * Comprueba si la matrícula introducida es válida y habilita el botón de generar ticket.
+     * @param evt KeyEvent que se produce al escribir en el campo de matrícula
+     */
     private void text_matriculaKeyReleased(java.awt.event.KeyEvent evt) {
         // Convertir el texto a mayúsculas
         String textoOriginal = this.text_matricula.getText().toUpperCase();

@@ -12,7 +12,7 @@ public class Ticket {
     /**
      * Constructor de la clase Ticket
      * 
-     * @param id identificador uncio del tiket
+     * @param id identificador uncio del ticket
      * @param matricula matricula del vehiculo
      * @param fechaHoraEntrada fecha y hora de entrada del vehiculo
      * @param Ubicacion ubicacion del vehiculo en el parking

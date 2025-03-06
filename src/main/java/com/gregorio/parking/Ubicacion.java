@@ -5,11 +5,12 @@ public class Ubicacion {
     private int plaza;
 
     /**
-     * Constructor de la clase Ubicacion
+     * Clase ubicacion con planta y plaza
      * 
-     * @param planta
-     * @param plaza
+     * @param planta ubicacion en el eje y
+     * @param plaza ubicacion en el eje x
      */
+    //Constructor de la clase Ubicacion
     public Ubicacion(int planta, int plaza) {
         this.planta = planta+1;
         this.plaza = plaza+1;
@@ -19,16 +20,8 @@ public class Ubicacion {
         return planta;
     }
 
-    public void setPlanta(int planta) {
-        this.planta = planta;
-    }
-
     public int getPlaza() {
         return plaza;
-    }
-
-    public void setPlaza(int plaza) {
-        this.plaza = plaza;
     }
 
     @Override

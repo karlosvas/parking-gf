@@ -28,12 +28,14 @@ public class Deposito {
     }
 
     /**
-     * Método para procesar el pago de un ticket, guardando los billetes correspondientes 
+     * Metodo para procesar el pago de un ticket, guardando los billetes correspondientes 
      * y utilizamos el cambio disponible en el deposito
      * 
      * @param dineroIntroducido Dinero que da el usuario para pagar el ticket
      * @param precioTicket Dinero tiene que pagar para el ticket
-     * @return cambio que se devuelve al usuario
+     * @throws DineroInsuficiente si no hay suficiente cambio en la maquina, es utilizado porque estos errores
+     * pueden producirse en los metodos a los que llama, como darCambio
+     * @return boleano que indica si todo ha salido bien
      */
     public boolean procesarPago(double dineroIntroducido, double precioTicket, Double[] listaDineroIntroducido) {
         // Si son valores invalidos, o el dinero introducido es menor que el precio del ticket lanzamos un mensaje de error
@@ -55,7 +57,7 @@ public class Deposito {
             double cambio =  dineroIntroducido - precioTicket;
 
             if(cambio > 0.0){
-                // Damos el cambio con el dinero disponible en el deposito
+                // Mostramos el cambio con el dinero disponible en el deposito
                 JOptionPane.showMessageDialog(null, "Tu cambio es " + cambio + "€", "Cambio", JOptionPane.INFORMATION_MESSAGE);
                 this.darCambio(cambio);
             }
@@ -73,9 +75,9 @@ public class Deposito {
     }
 
      /**
-     * MÃ©todo para recibir el dinero y guardarlo en el depÃ³sito
+     * Metodo para recibir el dinero y guardarlo en el deposito
      * 
-     * @param dineroRecivido Dinero que da el usuario
+     * @param listaDineroIntroducido Dinero que da el usuario para pagar el ticket, en formato arry double donde cada posicion es la cantidad de * cambio que da de cada billete ordenado de mayor a menor
      */
     public void recibirDinero(Double[] listaDineroIntroducido) {
         int i = 0;
@@ -84,20 +86,19 @@ public class Deposito {
     }
 
     /**
-     * MÃ©todo para almacenar el cambio que se devuelve al usuario en el deposito
+     * Metodo para almacenar el cambio que se devuelve al usuario en el deposito
      * 
      * @param cambio Dinero que se tiene que devolver al usuario
-     * @param precioTicket Dinero tiene que pagar para el ticket
-    * @throws DineroInsuficiente si no hay suficiente cambio en la mÃ¡quina
+    *  @throws DineroInsuficiente si no hay suficiente cambio en la maquina
     */
     public void darCambio(double cambio) throws DineroInsuficiente {
         // Recorremos los tipos de cambio para cada billete y moneda,
         // mientras haya mÃ¡s por devolver, y queden billetes o monedas continuamos.
         int i = 0;
         while(cambio > 0.0 && i < tiposCambio.length) {
-            // Si el cambio es mayor o igual al tipo de cambio actual podemos utilizarlo, ademÃ¡s deverÃ¡ haber de ese tipo en el depÃ³sito
+            // Si el cambio es mayor o igual al tipo de cambio actual podemos utilizarlo, ademas devera haber de ese tipo en el deposito
             if(cambio >= tiposCambio[i] && this.dinero.containsKey(tiposCambio[i]) && this.dinero.get(tiposCambio[i]) > 0) {
-                // Actualizamos el depÃ³sito, restandole una unidad al billete o moneda que utiliza
+                // Actualizamos el deposito, restandole una unidad al billete o moneda que utiliza
                 this.dinero.put(tiposCambio[i], this.dinero.get(tiposCambio[i]) - 1);
                 // Se resta del cambio el tipo de cambio actual
                 cambio -= tiposCambio[i];
@@ -106,7 +107,7 @@ public class Deposito {
             }
         }
 
-        // Si no hemos podido dar el cambio, es que no hay suficiente cambio en la mÃ¡quina
+        // Si no hemos podido dar el cambio, es que no hay suficiente cambio en la maquina lanzamos un error al padre
         if(cambio > 0){
             throw new DineroInsuficiente("No hay cambio suficiente");
         } else

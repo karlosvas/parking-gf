@@ -27,38 +27,18 @@ public class Maquina {
     }
 
     /**
-     * Metodo para generar un ticket
-     * 
-     * @param id Id del ticket
-     * @param matricula Matricula del vehiculo
-     * @param fecha Fecha y hora de entrada del vehÃ­culo
-     * @param ubicacion Ubicacion del vehiculo
-     * 
-     * @return Ticket generado
-     */	
-    public Ticket generarTiket(int id, String matricula, LocalDateTime fecha, Ubicacion ubicacion) {
-        // Creamos el ticket y lo añadimos al array de tickets
-        Ticket ticket = new Ticket(id, matricula, fecha, ubicacion);
-        this.tickets.add(ticket);
-
-        // Devolvemos el ticket
-        return ticket;
-    }
-
-    /**
      * Metodo para retirar un vehiculo del parking
      * 
-     * @param tiket Ticket del vehiculo a retirar
+     * @param ticket Ticket del vehiculo a retirar de la clase Ticket
      */
-    public void retirarVehiculo(Ticket tiket) {
+    public void retirarVehiculo(Ticket ticket) {
         // Eliminamos el ticket del array de tickets
-        this.tickets.remove(tiket);
+        this.tickets.remove(ticket);
     }
 
 
     /**
      * Metodo para calcular el precio de un ticket
-     * 
      * 
      * @param ticket Ticket del vehiculo
      * @param fechaSalida Fecha y hora de salida del vehiculo
@@ -71,19 +51,27 @@ public class Maquina {
         Duration duracion = java.time.Duration.between(fechaTicketEntrada, fechaSalida);
         int minutos = (int) duracion.toMinutes();
         // Calculamos el precio de todos los minutos transcurridos
-        return minutos* this.PRECIO_POR_MINUTO;
+        return minutos * this.PRECIO_POR_MINUTO;
     }
 
+    /**
+     * Metodo para generar un ticket
+     * 
+     * @param parking Array de parking
+     * @param matricula Matricula del vehiculo
+     * @return Ticket generado
+     */
     public Ticket generarTicket(Integer[][] parking, String matricula) {
         boolean encontrado = false;
         Ticket ticket = null;
+        // Recorremos el parking hasta encontrar ticket
         for (int y = 0; y < parking.length && !encontrado; y++) {
             for (int x = 0; x < parking[y].length && !encontrado; x++) {
                 if (parking[y][x] == 0) {
                     // Obtenemos la ubicacion y el id si hay plaza libre, y actualizamos el array de parking
                     Ubicacion ubicacion = new Ubicacion(y,x);
                     int id = parking[y][x] = Ticket.generarIdParking(ubicacion);
-                    // Verificamos que la matricula no este repetida si no lo esta salimos del bucle
+                    // Lo creamos y salimos de los bucles
                     ticket = new Ticket(id, matricula, LocalDateTime.now(), ubicacion);
                     encontrado = true;
                 }
@@ -95,9 +83,6 @@ public class Maquina {
     // GETTERS Y SETTERS
     public Deposito getDeposito() {
         return deposito;
-    }
-    public void setDeposito(Deposito deposito) {
-        this.deposito = deposito;
     }
 
     public ArrayList<Ticket> getTickets() {

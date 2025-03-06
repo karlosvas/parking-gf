@@ -45,13 +45,15 @@ public class Validation {
     }
 
     /**
-     * Método que valida si un String es una fecha y hora en formato dd/MM/yyyy HH:mm:ss
+     * Metodo que valida si un String es una fecha y hora en formato dd/MM/yyyy HH:mm:ss
      * 
      * @param input String a validar
      * @return LocalDateTime si el String es una fecha y hora en formato dd/MM/yyyy HH:mm:ss, null si no lo es
      */
     public static LocalDateTime parseLocalDateTime(String input) {
         try {
+            if(input.isEmpty() || input.matches(".*[a-zA-Z]+.*"))
+                return null;
             return LocalDateTime.parse(input, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         } catch (DateTimeParseException e) {
             return null;
@@ -61,15 +63,14 @@ public class Validation {
     }
 
     /**
-     *Método que valida si un String es una matrícula en formato cuatro numeros y tres letras mayusculas
-     * 
      * @param matricula String a validar
-     * @return true si el String es una matrícula en formato cuatro números y tres letras mayúsculas, false si no lo es
+     * @return true si el String es una matricula en formato cuatro numeros y tres letras mayusculas, false si no lo es
      */
+    //Metodo que valida si un String es una matricula en formato cuatro numeros y tres letras mayusculas
     public static boolean validarMatricula(String matricula) {
         return matricula.matches("[0-9]{4}[A-Z]{3}");
     }
-
+    //Metodo que valida si hay una matricula repetida en la lista de tickets
     public static boolean matriculaRepettida(String matricula, ArrayList<Ticket> listaTickets) {
         for (Ticket ticket : listaTickets) {
             if(ticket.getMatricula().equals(matricula)){

@@ -1,0 +1,51 @@
+@options
+@packages
+-encoding
+'UTF-8'
+-private
+--release
+18
+-sourcepath
+'C:/Users/vassanca/Desktop/repos/parking-gf/src/main/java'
+-Xdoclint:none
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/vassanca/Desktop/repos/parking-gf/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Parking 1.0-SNAPSHOT API'
+-nohelp
+-use
+-version
+-windowtitle
+'Parking 1.0-SNAPSHOT API'
+com.gregorio.parking
+com.gregorio.parking.exception
+com.gregorio.parking.utils
+C:\Users\vassanca\Desktop\repos\parking-gf\src\main\java = 1741249577067
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\allclasses-index.html = 1741254637785
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\allpackages-index.html = 1741254637788
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\constant-values.html = 1741254637709
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\copy.svg = 1741254637827
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\element-list = 1741254637672
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\index-all.html = 1741254637816
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\index.html = 1741254637771
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\link.svg = 1741254637828
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\member-search-index.js = 1741254637792
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\module-search-index.js = 1741254637789
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\overview-summary.html = 1741254637821
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\overview-tree.html = 1741254637767
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\package-search-index.js = 1741254637790
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\script.js = 1741254637825
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\search-page.js = 1741254637832
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\search.html = 1741254637819
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\search.js = 1741254637830
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\serialized-form.html = 1741254637720
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\stylesheet.css = 1741254637824
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\tag-search-index.js = 1741254637793
+C:\Users\vassanca\Desktop\repos\parking-gf\target\site\apidocs\type-search-index.js = 1741254637791
